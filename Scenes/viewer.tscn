@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://pxrv54b6rrrl"]
+
+[ext_resource type="Script" path="res://Scripts/viewer.gd" id="1_hnkqj"]
+[ext_resource type="Script" path="res://Scripts/camera.gd" id="2_axg8d"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xjf71"]
+sky_top_color = Color(0.658824, 0.364706, 0, 1)
+sky_horizon_color = Color(0.792157, 0.710784, 0.590196, 1)
+sky_energy_multiplier = 3.15
+ground_bottom_color = Color(0.509804, 0.478431, 0.360784, 1)
+ground_horizon_color = Color(0.792157, 0.710784, 0.590196, 1)
+
+[sub_resource type="Sky" id="Sky_b0m47"]
+sky_material = SubResource("ProceduralSkyMaterial_xjf71")
+
+[sub_resource type="Environment" id="Environment_eloud"]
+background_mode = 2
+sky = SubResource("Sky_b0m47")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jthe3"]
+
+[node name="Viewer" type="Node3D"]
+script = ExtResource("1_hnkqj")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_eloud")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+script = ExtResource("2_axg8d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("SphereShape3D_jthe3")
+disabled = true
+
+[node name="Camera" type="Camera3D" parent="CharacterBody3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
