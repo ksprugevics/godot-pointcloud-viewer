@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://b2hlg1flgcknc"]
+[gd_scene load_steps=4 format=3 uid="uid://b2hlg1flgcknc"]
 
 [ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_1rm1u"]
+[ext_resource type="Theme" uid="uid://bbaouflm3j4g2" path="res://Themes/menu_theme.tres" id="2_qwv7d"]
+
+[sub_resource type="SystemFont" id="SystemFont_xqi6m"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -9,7 +12,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_qwv7d")
 script = ExtResource("1_1rm1u")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_qwv7d")
+color = Color(0.180392, 0.109804, 0.168627, 1)
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1
@@ -18,30 +32,46 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_qwv7d")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 layout_mode = 2
+theme = ExtResource("2_qwv7d")
+theme_override_constants/separation = 80
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
-text = "Drag & drop your pointcloud file or find it with the file browser"
+theme = ExtResource("2_qwv7d")
+theme_override_font_sizes/font_size = 30
+text = "Drag & drop your pointcloud file or find it with the file browser. 
+The file must have a .txt file extension.
+Each line of the file corresponds to a point:
+
+x_coord, y_coord, height, label (optional)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="FileBrowserButton" type="Button" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme = ExtResource("2_qwv7d")
+theme_override_fonts/font = SubResource("SystemFont_xqi6m")
+theme_override_font_sizes/font_size = 22
 text = "Browse"
 
 [node name="PointcloudFileBrowser" type="FileDialog" parent="CenterContainer/VBoxContainer"]
-title = "Open pointcloud file"
+title = "Open a File"
 initial_position = 2
-size = Vector2i(500, 400)
+size = Vector2i(700, 400)
 visible = true
+theme = ExtResource("2_qwv7d")
 ok_button_text = "Open"
 file_mode = 0
 access = 2
+filters = PackedStringArray("*.txt")
+show_hidden_files = true
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/FileBrowserButton" to="." method="_on_file_browser_button_pressed"]
 [connection signal="file_selected" from="CenterContainer/VBoxContainer/PointcloudFileBrowser" to="." method="_on_pointcloud_file_browser_file_selected"]
