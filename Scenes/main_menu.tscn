@@ -39,7 +39,7 @@ layout_mode = 2
 theme = ExtResource("2_qwv7d")
 theme_override_constants/separation = 80
 
-[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+[node name="Text" type="Label" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_qwv7d")
 theme_override_font_sizes/font_size = 30
@@ -51,7 +51,30 @@ x_coord, y_coord, height, label (optional)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FileBrowserButton" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="PointcloudFileBrowser" type="FileDialog" parent="CenterContainer/VBoxContainer"]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(700, 400)
+theme = ExtResource("2_qwv7d")
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.txt")
+show_hidden_files = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="LoadButton" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_qwv7d")
+theme_override_font_sizes/font_size = 22
+text = "Load"
+
+[node name="FileBrowserButton" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(300, 40)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -61,17 +84,9 @@ theme_override_fonts/font = SubResource("SystemFont_xqi6m")
 theme_override_font_sizes/font_size = 22
 text = "Browse"
 
-[node name="PointcloudFileBrowser" type="FileDialog" parent="CenterContainer/VBoxContainer"]
-title = "Open a File"
-initial_position = 2
-size = Vector2i(700, 400)
-visible = true
-theme = ExtResource("2_qwv7d")
-ok_button_text = "Open"
-file_mode = 0
-access = 2
-filters = PackedStringArray("*.txt")
-show_hidden_files = true
+[node name="ProgressBar" type="ProgressBar" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/FileBrowserButton" to="." method="_on_file_browser_button_pressed"]
 [connection signal="file_selected" from="CenterContainer/VBoxContainer/PointcloudFileBrowser" to="." method="_on_pointcloud_file_browser_file_selected"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/FileBrowserButton" to="." method="_on_file_browser_button_pressed"]
