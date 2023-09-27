@@ -84,8 +84,11 @@ theme_override_fonts/font = SubResource("SystemFont_xqi6m")
 theme_override_font_sizes/font_size = 22
 text = "Browse"
 
-[node name="ProgressBar" type="ProgressBar" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+[node name="LoadingLabel" type="Label" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Loading..."
+horizontal_alignment = 1
 
 [connection signal="file_selected" from="CenterContainer/VBoxContainer/PointcloudFileBrowser" to="." method="_on_pointcloud_file_browser_file_selected"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
