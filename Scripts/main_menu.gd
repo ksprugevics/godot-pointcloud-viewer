@@ -11,6 +11,7 @@ const INT64_MAX = (1 << 63) - 1
 
 var pointcloudPath = ""
 var points = PackedVector3Array()
+var pointLabelMask = []
 var pointLabels = []
 var extent = [INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX] # xmin, xmax, zmin zmax, ymin, ymax
 
@@ -21,14 +22,16 @@ func _ready():
 	LOADING_LABEL.visible = false
 	get_tree().get_root().files_dropped.connect(_on_files_dropped)
 
+
 func _on_file_browser_button_pressed():
 	FILE_BROWSER.visible = true
+
 
 func _on_pointcloud_file_browser_file_selected(path):
 	LOAD_BUTTON.visible = true
 	TEXT_LABEL.text = "Selected:\n" + path
 	pointcloudPath = path
-	# get_tree().change_scene_to_file(VIEWER_SCENE)
+
 
 func _on_files_dropped(files):
 	var selectedFile = files[0]
@@ -37,6 +40,7 @@ func _on_files_dropped(files):
 	else:
 		_on_pointcloud_file_browser_file_selected(selectedFile)
 
+
 func _on_load_button_pressed():
 	FILE_BRWOSER_BUTTON.visible = false
 	LOAD_BUTTON.visible = false
@@ -44,20 +48,30 @@ func _on_load_button_pressed():
 	await get_tree().create_timer(0.2).timeout # without this UI doesnt get a chance to update
 	loadPointcloudFile(pointcloudPath)
 	LOADING_LABEL.visible = false
+	get_node("/root/Variables").points = points
+	get_node("/root/Variables").pointLabelMask = pointLabelMask
+	get_node("/root/Variables").pointLabels = pointLabels
+	get_node("/root/Variables").extent = extent
+	get_tree().change_scene_to_file(VIEWER_SCENE)
 
-func loadPointcloudFile(filePath, limit=null):
+
+func loadPointcloudFile(filePath, limit=null, labels=true):
 	var file = FileAccess.open(filePath, FileAccess.READ)
 	limit = file.get_length() if limit == null else limit
 
 	for i in range(limit):
 		var coordinate = file.get_csv_line(" ")
-		if len(coordinate) != 4: continue
+		if len(coordinate) != 4 and labels: continue
 		var x = float(coordinate[0])
 		var z = float(coordinate[1])
 		var y = float(coordinate[2])
 		
 		points.push_back(Vector3(x, z, y))
-		pointLabels.append(coordinate[3])
+		
+		pointLabelMask.append(coordinate[3])
+		
+		if !pointLabels.has(coordinate[3]):
+			pointLabels.append(coordinate[3])
 
 		if x <= extent[0]:
 			extent[0] = x
@@ -71,4 +85,4 @@ func loadPointcloudFile(filePath, limit=null):
 			extent[4] = y
 		if y >= extent[5]:
 			extent[5] = y
-	
+		

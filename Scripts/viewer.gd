@@ -1,12 +1,11 @@
 extends Node3D
 
-var test = "I have not been passed"
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	print("This is my viewer scene")
-	print(test)
-
+	print(len(get_node("/root/Variables").points))
+	print(len(get_node("/root/Variables").pointLabelMask))
+	print(get_node("/root/Variables").pointLabels)
+	print(get_node("/root/Variables").extent)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
