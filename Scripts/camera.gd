@@ -24,7 +24,7 @@ func _input(event):
 		camera.rotation.x = clamp(camera.rotation.x, -PI / 2, PI / 2)
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var input_dir = Input.get_vector("cam_left", "cam_right", "cam_forward", "cam_back")
 	
 	var y_dir = 0

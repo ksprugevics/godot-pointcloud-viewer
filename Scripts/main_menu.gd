@@ -52,6 +52,11 @@ func _on_load_button_pressed():
 	get_node("/root/Variables").pointLabelMask = pointLabelMask
 	get_node("/root/Variables").pointLabels = pointLabels
 	get_node("/root/Variables").extent = extent
+	
+	# Create a promt to load anyway
+	if len(points) != len(pointLabelMask):
+		push_warning("Point array length and mask length is not the same. Invalid labels")
+	
 	get_tree().change_scene_to_file(VIEWER_SCENE)
 
 
@@ -66,7 +71,7 @@ func loadPointcloudFile(filePath, limit=null, labels=true):
 		var z = float(coordinate[1])
 		var y = float(coordinate[2])
 		
-		points.push_back(Vector3(x, z, y))
+		points.push_back(Vector3(x, y, z))
 		
 		pointLabelMask.append(coordinate[3])
 		
@@ -77,12 +82,11 @@ func loadPointcloudFile(filePath, limit=null, labels=true):
 			extent[0] = x
 		if x >= extent[1]:
 			extent[1] = x
-		if z <= extent[2]:
-			extent[2] = z
-		if z >= extent[3]:
-			extent[3] = z
-		if y <= extent[4]:
-			extent[4] = y
-		if y >= extent[5]:
-			extent[5] = y
-		
+		if y <= extent[2]:
+			extent[2] = y
+		if y >= extent[3]:
+			extent[3] = y
+		if z <= extent[4]:
+			extent[4] = z
+		if z >= extent[5]:
+			extent[5] = z
