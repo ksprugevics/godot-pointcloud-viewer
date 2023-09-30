@@ -28,17 +28,31 @@ func translatePointcloud():
 
 
 func createMesh():
-	var array_mesh = ArrayMesh.new()
-	var meshPoints = []
-	meshPoints.resize(Mesh.ARRAY_MAX)
-	meshPoints[Mesh.ARRAY_VERTEX] = points
-	array_mesh.add_surface_from_arrays(PrimitiveMesh.PRIMITIVE_POINTS, meshPoints)
-	var instance = MeshInstance3D.new()
-	instance.mesh = array_mesh
+	for label in pointLabels:
+		var array_mesh = ArrayMesh.new()
+		var meshPoints = []
+		meshPoints.resize(Mesh.ARRAY_MAX)
+		var newPoints = PackedVector3Array()
+		for i in range(0, len(points)):
+			if pointLabelMask[i] == label:
+				newPoints.push_back(points[i])
+		
+		meshPoints[Mesh.ARRAY_VERTEX] = newPoints
+		array_mesh.add_surface_from_arrays(PrimitiveMesh.PRIMITIVE_POINTS, meshPoints)
+		var instance = MeshInstance3D.new()
+		instance.mesh = array_mesh
 	
-	var matNew = StandardMaterial3D.new()
-	matNew.albedo_color = Color(1, 0.5, 0.5)
-	instance.set_material_override(matNew)
-	add_child(instance)
-	print(instance)
-	print("Yo i created that instance")
+		var matNew = StandardMaterial3D.new()
+		matNew.use_point_size = true
+		matNew.point_size = 3
+		matNew.disable_ambient_light = true
+		matNew.no_depth_test = true
+		matNew.roughness = 0
+		matNew.metallic_specular = 0
+		matNew.disable_receive_shadows = true
+		if label == "1.0000000":
+			matNew.albedo_color = Color(0.5, 0.5, 0.5)
+		else:
+			matNew.albedo_color = Color(0, 1, 0)
+		instance.set_material_override(matNew)
+		add_child(instance)
