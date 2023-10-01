@@ -66,6 +66,15 @@ show_hidden_files = true
 layout_mode = 2
 theme_override_constants/separation = 15
 
+[node name="LabelCheckBox" type="CheckBox" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 23
+text = "Load labels (4th value)"
+flat = true
+alignment = 1
+
 [node name="LoadButton" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(300, 40)
 layout_mode = 2
@@ -91,5 +100,6 @@ text = "Loading..."
 horizontal_alignment = 1
 
 [connection signal="file_selected" from="CenterContainer/VBoxContainer/PointcloudFileBrowser" to="." method="_on_pointcloud_file_browser_file_selected"]
+[connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/LabelCheckBox" to="." method="_on_label_check_box_toggled"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/FileBrowserButton" to="." method="_on_file_browser_button_pressed"]
