@@ -12,11 +12,10 @@ const UNLABELED_LABEL = "__UNLABELED__"
 @onready var LABEL_CHECK_BOX = $CenterContainer/VBoxContainer/VBoxContainer/LabelCheckBox
 
 var pointcloudPath = ""
-var points = PackedVector3Array()
-var pointLabelMask = []
-var pointLabels = []
+var delimiter = " "
 var extent = [INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX] # xmin, xmax, zmin zmax, ymin, ymax
 var useLabels = false
+var labeledPoints = {}
 
 
 func _ready():
@@ -56,28 +55,15 @@ func _on_load_button_pressed():
 	LABEL_CHECK_BOX.visible = false
 	LOADING_LABEL.visible = true
 	await get_tree().create_timer(0.2).timeout # without this UI doesnt get a chance to update
-	
 	processLoad()
-	
-	# Create a promt to load anyway
-	if len(points) != len(pointLabelMask):
-		push_warning("Point array length and mask length is not the same. Invalid labels")
-	
 	get_tree().change_scene_to_file(VIEWER_SCENE)
 
 
 func processLoad():
+	labeledPoints[UNLABELED_LABEL] = PackedVector3Array()
 	loadPointcloudFile(pointcloudPath)
 	translatePointcloud()
 	updateGlobalVariables()
-
-
-func updateGlobalVariables():
-	get_node("/root/Variables").points = points
-	get_node("/root/Variables").pointLabelMask = pointLabelMask
-	get_node("/root/Variables").pointLabels = pointLabels
-	get_node("/root/Variables").extent = extent
-	get_node("/root/Variables").useLabels = useLabels
 
 
 func loadPointcloudFile(filePath, limit=null):
@@ -85,26 +71,19 @@ func loadPointcloudFile(filePath, limit=null):
 	limit = file.get_length() if limit == null else limit
 
 	for i in range(limit):
-		var coordinate = file.get_csv_line(" ")
-		if len(coordinate) < 3: continue
+		var line = file.get_csv_line(delimiter)
+		if len(line) < 3: continue
 		
-		var x = float(coordinate[0])
-		var z = float(coordinate[1])
-		var y = float(coordinate[2])
-		
-		var point = Vector3(x, y, z)
-		points.push_back(point)
+		var point = Vector3(float(line[0]), float(line[2]), float(line[1]))
 		updateExtents(point)
 		
-		if useLabels:
-			if len(coordinate) == 4:
-				pointLabelMask.append(coordinate[3])
-				if !pointLabels.has(coordinate[3]):
-					pointLabels.append(coordinate[3])
-			else:
-				pointLabelMask.append(UNLABELED_LABEL)
-				if !pointLabels.has(UNLABELED_LABEL):
-					pointLabels.append(UNLABELED_LABEL)
+		var label = UNLABELED_LABEL
+		if useLabels and len(line) == 4:
+			label = line[3]
+			if !labeledPoints.has(line[3]):
+				labeledPoints[line[3]] = PackedVector3Array()
+			
+		labeledPoints[label].push_back(point)
 
 
 func updateExtents(point):
@@ -123,9 +102,15 @@ func updateExtents(point):
 
 
 func translatePointcloud():
-	var newPoints = PackedVector3Array()
-	for i in range(0, len(points)):
-		var normalized_x = points[i][0] - extent[1]
-		var normalized_z = points[i][2]- extent[5]
-		newPoints.push_back(Vector3(normalized_x, points[i][1], normalized_z))
-	points = newPoints
+	for label in labeledPoints.keys():
+		for i in range(0, len(labeledPoints[label])):
+			var normalized_x = labeledPoints[label][i][0] - extent[1]
+			var normalized_z = labeledPoints[label][i][2]- extent[5]
+			labeledPoints[label][i][0] = normalized_x
+			labeledPoints[label][i][2] = normalized_z
+
+
+func updateGlobalVariables():
+	get_node("/root/Variables").labeledPoints = labeledPoints
+	get_node("/root/Variables").extent = extent
+	get_node("/root/Variables").useLabels = useLabels

@@ -3,17 +3,13 @@ extends Node3D
 var baseMaterial
 var pointSize = 3
 
-var points = PackedVector3Array()
-var pointLabelMask = []
-var pointLabels = []
+var labeledPoints = {}
 var extent = []
 var useLabels = false
 
 
 func _ready():
-	points = get_node("/root/Variables").points
-	pointLabelMask = get_node("/root/Variables").pointLabelMask
-	pointLabels = get_node("/root/Variables").pointLabels
+	labeledPoints = get_node("/root/Variables").labeledPoints
 	extent = get_node("/root/Variables").extent
 	useLabels = get_node("/root/Variables").useLabels
 	
@@ -33,42 +29,24 @@ func initializeMeshMaterial():
 
 
 func createMesh():
-	
-	if useLabels:
-		for label in pointLabels:
-			var array_mesh = ArrayMesh.new()
-			var meshPoints = []
-			meshPoints.resize(Mesh.ARRAY_MAX)
-			var newPoints = PackedVector3Array()
-			for i in range(0, len(points)):
-				if pointLabelMask[i] == label:
-					newPoints.push_back(points[i])
-			
-			meshPoints[Mesh.ARRAY_VERTEX] = newPoints
-			array_mesh.add_surface_from_arrays(PrimitiveMesh.PRIMITIVE_POINTS, meshPoints)
-			var instance = MeshInstance3D.new()
-			instance.mesh = array_mesh
+	for label in labeledPoints.keys():
+		print(label)
+		print(len(labeledPoints[label]))
 		
-			var matNew = baseMaterial.duplicate()
-			
-			if label == "1.0000000":
-				matNew.albedo_color = Color(0.5, 0.5, 0.5)
-			else:
-				matNew.albedo_color = Color(0, 1, 0)
-				
-			instance.set_material_override(matNew)
-			add_child(instance)
-	else:
 		var array_mesh = ArrayMesh.new()
 		var meshPoints = []
 		meshPoints.resize(Mesh.ARRAY_MAX)
-		
-		meshPoints[Mesh.ARRAY_VERTEX] = points
+
+		meshPoints[Mesh.ARRAY_VERTEX] = labeledPoints[label]
 		array_mesh.add_surface_from_arrays(PrimitiveMesh.PRIMITIVE_POINTS, meshPoints)
 		var instance = MeshInstance3D.new()
 		instance.mesh = array_mesh
-	
+		
 		var matNew = baseMaterial.duplicate()
-		matNew.albedo_color = Color(0, 0, 1)
+		if label == "1.0000000":
+			matNew.albedo_color = Color(0.5, 0.5, 0.5)
+		else:
+			matNew.albedo_color = Color(0, 1, 0)
+
 		instance.set_material_override(matNew)
 		add_child(instance)
