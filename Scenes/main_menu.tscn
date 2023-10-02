@@ -71,7 +71,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/font_size = 23
-text = "Load labels (4th value)"
+text = "    Load labels (4th value)"
 flat = true
 alignment = 1
 

@@ -5,17 +5,26 @@ extends CharacterBody3D
 @export var mouse_sens = 0.001
 @onready var camera:Camera3D = $Camera
 
+var menuOpen = false
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _input(event):
 	# Hide mouse
-	if event is InputEventMouseButton:
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	elif event.is_action_pressed("ui_cancel"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		
+#	if event is InputEventMouseButton:
+#		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+#		menuOpen = !menuOpen
+	if event.is_action_pressed("ui_cancel"):
+		if !menuOpen:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		menuOpen = !menuOpen
+	
+	if menuOpen: return
+	
 	# Rotate
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * mouse_sens)

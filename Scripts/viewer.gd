@@ -1,5 +1,7 @@
 extends Node3D
 
+var rng = RandomNumberGenerator.new()
+
 var baseMaterial
 var pointSize = 3
 
@@ -43,10 +45,7 @@ func createMesh():
 		instance.mesh = array_mesh
 		
 		var matNew = baseMaterial.duplicate()
-		if label == "1.0000000":
-			matNew.albedo_color = Color(0.5, 0.5, 0.5)
-		else:
-			matNew.albedo_color = Color(0, 1, 0)
+		matNew.albedo_color = Color(rng.randf(), rng.randf(), rng.randf())
 
 		instance.set_material_override(matNew)
 		add_child(instance)
