@@ -5,17 +5,14 @@
 [ext_resource type="Script" path="res://Scripts/side_menu.gd" id="3_y06dj"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xjf71"]
-sky_top_color = Color(0.658824, 0.364706, 0, 1)
-sky_horizon_color = Color(0.792157, 0.710784, 0.590196, 1)
-sky_energy_multiplier = 3.15
-ground_bottom_color = Color(0.509804, 0.478431, 0.360784, 1)
-ground_horizon_color = Color(0.792157, 0.710784, 0.590196, 1)
+ground_horizon_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Sky" id="Sky_b0m47"]
 sky_material = SubResource("ProceduralSkyMaterial_xjf71")
 
 [sub_resource type="Environment" id="Environment_eloud"]
-background_mode = 2
+background_mode = 1
+background_color = Color(0.266701, 0.484858, 1, 1)
 sky = SubResource("Sky_b0m47")
 tonemap_mode = 2
 glow_enabled = true
@@ -233,7 +230,7 @@ horizontal_alignment = 1
 [node name="SkyColorLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "Sky color"
+text = "Background color"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -244,19 +241,7 @@ text = " "
 [node name="HSeparator2" type="HSeparator" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
 layout_mode = 2
 
-[node name="GroundColorLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 12
-text = "Ground color"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="GroundColorPicker" type="ColorPickerButton" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
-layout_mode = 2
-text = " "
-
 [node name="ColorsLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
-visible = false
 layout_mode = 2
 text = "Colors
 "
@@ -275,7 +260,7 @@ offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_vertical = 8
-text = "Exit"
+text = "Exit application"
 
 [node name="ControlsLabel" type="Label" parent="Control"]
 layout_mode = 1
@@ -297,7 +282,7 @@ ctrl - move down
 shift - move 2x speed"
 horizontal_alignment = 1
 
-[node name="Legend" type="Label" parent="Control"]
+[node name="Legend" type="RichTextLabel" parent="Control"]
 layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
@@ -309,19 +294,18 @@ offset_right = -11.0
 offset_bottom = -183.0
 grow_horizontal = 0
 grow_vertical = 2
-horizontal_alignment = 1
+bbcode_enabled = true
+text = "[center]Statistics
+"
 
 [connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/FpsCheckbox" to="Control" method="_on_fps_checkbox_toggled"]
 [connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/VsyncCheckbox" to="Control" method="_on_vsync_checkbox_toggled"]
 [connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/FullscreenCkecbox" to="Control" method="_on_fullscreen_ckecbox_toggled"]
 [connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/ControlsCheckbox" to="Control" method="_on_controls_checkbox_toggled"]
 [connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/LabelsCheckbox" to="Control" method="_on_labels_checkbox_toggled"]
-[connection signal="ready" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/FovSlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
 [connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/FovSlider" to="CharacterBody3D" method="_on_fov_slider_value_changed"]
-[connection signal="ready" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/SensitivitySlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
 [connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/SensitivitySlider" to="CharacterBody3D" method="_on_sensitivity_slider_value_changed"]
-[connection signal="ready" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/MovementSpeedSlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
 [connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/MovementSpeedSlider" to="CharacterBody3D" method="_on_movement_speed_slider_value_changed"]
-[connection signal="ready" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/FastMoveSlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
 [connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/FastMoveSlider" to="CharacterBody3D" method="_on_fast_move_slider_value_changed"]
+[connection signal="color_changed" from="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings/SkyColorPicker" to="." method="_on_sky_color_picker_color_changed"]
 [connection signal="pressed" from="Control/Panel/ExitButton" to="Control" method="_on_exit_button_pressed"]

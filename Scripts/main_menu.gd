@@ -16,6 +16,7 @@ var delimiter = " "
 var extent = [INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX] # xmin, xmax, zmin zmax, ymin, ymax
 var useLabels = false
 var labeledPoints = {}
+var labelColors = {}
 
 
 func _ready():
@@ -45,7 +46,7 @@ func _on_files_dropped(files):
 		_on_pointcloud_file_browser_file_selected(selectedFile)
 
 
-func _on_label_check_box_toggled(button_pressed):
+func _on_label_check_box_toggled(_button_pressed):
 	useLabels = !useLabels
 
 
@@ -63,6 +64,7 @@ func processLoad():
 	labeledPoints[UNLABELED_LABEL] = PackedVector3Array()
 	loadPointcloudFile(pointcloudPath)
 	translatePointcloud()
+	generateRandomColors()
 	updateGlobalVariables()
 
 
@@ -110,7 +112,13 @@ func translatePointcloud():
 			labeledPoints[label][i][2] = normalized_z
 
 
+func generateRandomColors():
+	for label in labeledPoints.keys():
+		labelColors[label] = Color(randf(), randf(), randf())
+
+
 func updateGlobalVariables():
 	get_node("/root/Variables").labeledPoints = labeledPoints
 	get_node("/root/Variables").extent = extent
 	get_node("/root/Variables").useLabels = useLabels
+	get_node("/root/Variables").labelColors = labelColors

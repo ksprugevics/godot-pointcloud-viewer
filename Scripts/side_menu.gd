@@ -11,16 +11,26 @@ var showFps = true
 
 func _ready():
 	SIDE_PANEL.visible = false
-	var labeledPoints = get_node("/root/Variables").labeledPoints
-	var legendText = ""
-	for label in labeledPoints.keys():
-		var text = label +  " : " + str(labeledPoints.get(label).size()) + "\n"
-		legendText += text
-	LEGEND_LABEL.set_text(legendText)
-	
-	
+	initializeLegend()
 
-func _process(delta):
+
+func initializeLegend():
+	var labeledPoints = get_node("/root/Variables").labeledPoints
+	var labelColors = get_node("/root/Variables").labelColors
+	
+	LEGEND_LABEL.push_font_size(12)
+	
+	for label in labeledPoints.keys():
+		var count = labeledPoints.get(label).size()
+		if count < 1: continue
+		LEGEND_LABEL.push_color(labelColors[label])
+		LEGEND_LABEL.add_text(label + " : " + str(count) + "\n")
+		LEGEND_LABEL.pop()
+		
+	LEGEND_LABEL.pop()
+	
+	
+func _process(_delta):
 	if showFps:
 		FPS_COUNTER.set_text(str(Engine.get_frames_per_second()) + "fps")
 
