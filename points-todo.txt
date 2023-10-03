@@ -3,6 +3,8 @@
 - global camera orbit (extent)
 
 - in game menu with
-	- change colors
-	- change basic material settings point size, shading
+	- change colors, point size for each label individually
+	- change basic material settings, shading
 	- environment colors
+
+- proper legend with rich text and colors

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://pxrv54b6rrrl"]
+[gd_scene load_steps=9 format=3 uid="uid://pxrv54b6rrrl"]
 
 [ext_resource type="Script" path="res://Scripts/viewer.gd" id="1_hnkqj"]
 [ext_resource type="Script" path="res://Scripts/camera.gd" id="2_axg8d"]
@@ -21,6 +21,9 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_jthe3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_51ipk"]
+content_margin_left = 35.0
 
 [node name="Viewer" type="Node3D"]
 script = ExtResource("1_hnkqj")
@@ -71,133 +74,206 @@ anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 251.0
 grow_vertical = 2
-metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/Panel"]
+[node name="SettingsLabel" type="Label" parent="Control/Panel"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 18.0
-offset_right = -13.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -82.0
+offset_right = 82.0
+offset_bottom = 38.0
 grow_horizontal = 2
-grow_vertical = 2
-
-[node name="SettingsLabel" type="Label" parent="Control/Panel/VBoxContainer"]
-layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Settings"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Control/Panel/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="Control/Panel"]
 layout_mode = 2
+offset_left = 14.0
+offset_top = 38.0
+offset_right = 240.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="DisplaySettings" type="VBoxContainer" parent="Control/Panel/VBoxContainer"]
-layout_mode = 2
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = 50.0
+offset_right = -1.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_51ipk")
+horizontal_scroll_mode = 0
 
-[node name="DisplayLabel" type="Label" parent="Control/Panel/VBoxContainer/DisplaySettings"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Panel/ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="DisplaySettings" type="VBoxContainer" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="DisplayLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings"]
+layout_mode = 2
+size_flags_horizontal = 4
 text = "Display"
 horizontal_alignment = 1
 
-[node name="FpsCheckbox" type="CheckBox" parent="Control/Panel/VBoxContainer/DisplaySettings"]
+[node name="FpsCheckbox" type="CheckBox" parent="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings"]
 layout_mode = 2
 button_pressed = true
 text = "  Show FPS"
 
-[node name="VsyncCheckbox" type="CheckBox" parent="Control/Panel/VBoxContainer/DisplaySettings"]
+[node name="VsyncCheckbox" type="CheckBox" parent="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings"]
 layout_mode = 2
 button_pressed = true
 text = "  Enable VSYNC"
 
-[node name="FullscreenCkecbox" type="CheckBox" parent="Control/Panel/VBoxContainer/DisplaySettings"]
+[node name="FullscreenCkecbox" type="CheckBox" parent="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings"]
 layout_mode = 2
 text = "  Fullscreen mode"
 
-[node name="ControlsCheckbox" type="CheckBox" parent="Control/Panel/VBoxContainer/DisplaySettings"]
+[node name="ControlsCheckbox" type="CheckBox" parent="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings"]
 layout_mode = 2
 button_pressed = true
 text = "  Show controls"
 
-[node name="LabelsCheckbox" type="CheckBox" parent="Control/Panel/VBoxContainer/DisplaySettings"]
+[node name="LabelsCheckbox" type="CheckBox" parent="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings"]
 layout_mode = 2
 button_pressed = true
 text = "  Show legend"
 
-[node name="FovLabel" type="Label" parent="Control/Panel/VBoxContainer/DisplaySettings"]
+[node name="FovLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Field of view"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FovSlider" type="HSlider" parent="Control/Panel/VBoxContainer/DisplaySettings"]
+[node name="FovSlider" type="HSlider" parent="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings"]
 layout_mode = 2
 min_value = 50.0
 max_value = 140.0
 value = 75.0
+scrollable = false
 
-[node name="HSeparator3" type="HSeparator" parent="Control/Panel/VBoxContainer/DisplaySettings"]
+[node name="HSeparator3" type="HSeparator" parent="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings"]
 layout_mode = 2
 
-[node name="MovementSettings" type="VBoxContainer" parent="Control/Panel/VBoxContainer"]
+[node name="MovementSettings" type="VBoxContainer" parent="Control/Panel/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="MovementLabel" type="Label" parent="Control/Panel/VBoxContainer/MovementSettings"]
+[node name="MovementLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings"]
 layout_mode = 2
 text = "Movement"
 horizontal_alignment = 1
 
-[node name="MouseSensitivityLabel" type="Label" parent="Control/Panel/VBoxContainer/MovementSettings"]
+[node name="MouseSensitivityLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Mouse sensitivity"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SensitivitySlider" type="HSlider" parent="Control/Panel/VBoxContainer/MovementSettings"]
+[node name="SensitivitySlider" type="HSlider" parent="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings"]
 layout_mode = 2
 min_value = 1.0
 max_value = 10.0
 step = 0.01
 value = 2.5
+scrollable = false
 
-[node name="MovementSpeedLabel" type="Label" parent="Control/Panel/VBoxContainer/MovementSettings"]
+[node name="MovementSpeedLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Camera speed"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MovementSpeedSlider" type="HSlider" parent="Control/Panel/VBoxContainer/MovementSettings"]
+[node name="MovementSpeedSlider" type="HSlider" parent="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings"]
 layout_mode = 2
 min_value = 10.0
 value = 20.0
+scrollable = false
 
-[node name="FastMoveLabel" type="Label" parent="Control/Panel/VBoxContainer/MovementSettings"]
+[node name="FastMoveLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Speed multiplier (shift)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="FastMoveSlider" type="HSlider" parent="Control/Panel/VBoxContainer/MovementSettings"]
+[node name="FastMoveSlider" type="HSlider" parent="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings"]
 layout_mode = 2
 min_value = 1.0
 max_value = 10.0
 value = 2.0
+scrollable = false
 
-[node name="HSeparator2" type="HSeparator" parent="Control/Panel/VBoxContainer/MovementSettings"]
+[node name="HSeparator2" type="HSeparator" parent="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings"]
 layout_mode = 2
 
-[node name="ColorsLabel" type="Label" parent="Control/Panel/VBoxContainer"]
+[node name="EnvironmentSettings" type="VBoxContainer" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="EnvironmentLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
+layout_mode = 2
+text = "Environment
+"
+horizontal_alignment = 1
+
+[node name="SkyColorLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Sky color"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkyColorPicker" type="ColorPickerButton" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
+layout_mode = 2
+text = " "
+
+[node name="HSeparator2" type="HSeparator" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
+layout_mode = 2
+
+[node name="GroundColorLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Ground color"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GroundColorPicker" type="ColorPickerButton" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
+layout_mode = 2
+text = " "
+
+[node name="ColorsLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Colors
 "
 horizontal_alignment = 1
 
-[node name="ExitButton" type="Button" parent="Control/Panel/VBoxContainer"]
-layout_mode = 2
+[node name="ExitButton" type="Button" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -39.0
+offset_right = -5.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
 size_flags_vertical = 8
 text = "Exit"
 
@@ -235,17 +311,17 @@ grow_horizontal = 0
 grow_vertical = 2
 horizontal_alignment = 1
 
-[connection signal="toggled" from="Control/Panel/VBoxContainer/DisplaySettings/FpsCheckbox" to="Control" method="_on_fps_checkbox_toggled"]
-[connection signal="toggled" from="Control/Panel/VBoxContainer/DisplaySettings/VsyncCheckbox" to="Control" method="_on_vsync_checkbox_toggled"]
-[connection signal="toggled" from="Control/Panel/VBoxContainer/DisplaySettings/FullscreenCkecbox" to="Control" method="_on_fullscreen_ckecbox_toggled"]
-[connection signal="toggled" from="Control/Panel/VBoxContainer/DisplaySettings/ControlsCheckbox" to="Control" method="_on_controls_checkbox_toggled"]
-[connection signal="toggled" from="Control/Panel/VBoxContainer/DisplaySettings/LabelsCheckbox" to="Control" method="_on_labels_checkbox_toggled"]
-[connection signal="ready" from="Control/Panel/VBoxContainer/DisplaySettings/FovSlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
-[connection signal="value_changed" from="Control/Panel/VBoxContainer/DisplaySettings/FovSlider" to="CharacterBody3D" method="_on_fov_slider_value_changed"]
-[connection signal="ready" from="Control/Panel/VBoxContainer/MovementSettings/SensitivitySlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
-[connection signal="value_changed" from="Control/Panel/VBoxContainer/MovementSettings/SensitivitySlider" to="CharacterBody3D" method="_on_sensitivity_slider_value_changed"]
-[connection signal="ready" from="Control/Panel/VBoxContainer/MovementSettings/MovementSpeedSlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
-[connection signal="value_changed" from="Control/Panel/VBoxContainer/MovementSettings/MovementSpeedSlider" to="CharacterBody3D" method="_on_movement_speed_slider_value_changed"]
-[connection signal="ready" from="Control/Panel/VBoxContainer/MovementSettings/FastMoveSlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
-[connection signal="value_changed" from="Control/Panel/VBoxContainer/MovementSettings/FastMoveSlider" to="CharacterBody3D" method="_on_fast_move_slider_value_changed"]
-[connection signal="pressed" from="Control/Panel/VBoxContainer/ExitButton" to="Control" method="_on_exit_button_pressed"]
+[connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/FpsCheckbox" to="Control" method="_on_fps_checkbox_toggled"]
+[connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/VsyncCheckbox" to="Control" method="_on_vsync_checkbox_toggled"]
+[connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/FullscreenCkecbox" to="Control" method="_on_fullscreen_ckecbox_toggled"]
+[connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/ControlsCheckbox" to="Control" method="_on_controls_checkbox_toggled"]
+[connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/LabelsCheckbox" to="Control" method="_on_labels_checkbox_toggled"]
+[connection signal="ready" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/FovSlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
+[connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/FovSlider" to="CharacterBody3D" method="_on_fov_slider_value_changed"]
+[connection signal="ready" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/SensitivitySlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
+[connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/SensitivitySlider" to="CharacterBody3D" method="_on_sensitivity_slider_value_changed"]
+[connection signal="ready" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/MovementSpeedSlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
+[connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/MovementSpeedSlider" to="CharacterBody3D" method="_on_movement_speed_slider_value_changed"]
+[connection signal="ready" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/FastMoveSlider" to="CharacterBody3D" method="_on_sensitivity_slider_ready"]
+[connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/FastMoveSlider" to="CharacterBody3D" method="_on_fast_move_slider_value_changed"]
+[connection signal="pressed" from="Control/Panel/ExitButton" to="Control" method="_on_exit_button_pressed"]
