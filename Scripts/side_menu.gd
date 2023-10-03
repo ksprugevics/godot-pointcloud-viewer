@@ -1,15 +1,23 @@
 extends Control
 
 
-@onready var SIDE_PANEL = $SidePanel
+@onready var SIDE_PANEL = $Panel
 @onready var FPS_COUNTER = $FpsCounter
 @onready var CONTROLS_LABEL = $ControlsLabel
+@onready var LEGEND_LABEL = $Legend
 
 var showFps = true
 
 
 func _ready():
 	SIDE_PANEL.visible = false
+	var labeledPoints = get_node("/root/Variables").labeledPoints
+	var legendText = ""
+	for label in labeledPoints.keys():
+		var text = label +  " : " + str(labeledPoints.get(label).size()) + "\n"
+		legendText += text
+	LEGEND_LABEL.set_text(legendText)
+	
 	
 
 func _process(delta):
@@ -54,3 +62,10 @@ func _on_controls_checkbox_toggled(button_pressed):
 
 func _on_exit_button_pressed():
 	get_tree().quit()
+
+
+func _on_labels_checkbox_toggled(button_pressed):
+	if button_pressed:
+		LEGEND_LABEL.visible = true
+	else:
+		LEGEND_LABEL.visible = false

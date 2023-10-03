@@ -1,7 +1,8 @@
 - custom delimiter
 - local camera orbit
 - global camera orbit (extent)
+
 - in game menu with
 	- change colors
 	- change basic material settings point size, shading
-	
+	- environment colors
