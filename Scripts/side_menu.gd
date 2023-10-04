@@ -5,19 +5,26 @@ extends Control
 @onready var FPS_COUNTER = $FpsCounter
 @onready var CONTROLS_LABEL = $ControlsLabel
 @onready var LEGEND_LABEL = $Legend
+@onready var LABEL_SETTINGS = $Panel/ScrollContainer/VBoxContainer/LabelSettings
 
 var showFps = true
+var labeledPoints = null
+var labelColors
 
 
 func _ready():
+	labeledPoints = get_node("/root/Variables").labeledPoints
+	labelColors = get_node("/root/Variables").labelColors
 	SIDE_PANEL.visible = false
 	initializeLegend()
+	
+	for label in labeledPoints.keys():
+		var l = Label.new()
+		l.text = label
+		LABEL_SETTINGS.add_child(l)
 
 
 func initializeLegend():
-	var labeledPoints = get_node("/root/Variables").labeledPoints
-	var labelColors = get_node("/root/Variables").labelColors
-	
 	LEGEND_LABEL.push_font_size(12)
 	
 	for label in labeledPoints.keys():

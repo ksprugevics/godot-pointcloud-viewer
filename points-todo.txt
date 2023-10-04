@@ -5,5 +5,3 @@
 - in game menu with
 	- change colors, point size for each label individually
 	- change basic material settings, shading
-
-- proper legend with rich text and colors

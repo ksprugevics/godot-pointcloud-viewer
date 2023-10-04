@@ -219,6 +219,7 @@ scrollable = false
 layout_mode = 2
 
 [node name="EnvironmentSettings" type="VBoxContainer" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="EnvironmentLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
@@ -241,11 +242,16 @@ text = " "
 [node name="HSeparator2" type="HSeparator" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
 layout_mode = 2
 
-[node name="ColorsLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+[node name="LabelSettings" type="VBoxContainer" parent="Control/Panel/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-text = "Colors
-"
+
+[node name="ColorsLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/LabelSettings"]
+layout_mode = 2
+text = "Labels"
 horizontal_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="Control/Panel/ScrollContainer/VBoxContainer/LabelSettings"]
+layout_mode = 2
 
 [node name="ExitButton" type="Button" parent="Control/Panel"]
 layout_mode = 1
