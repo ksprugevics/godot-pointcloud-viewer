@@ -17,11 +17,12 @@ func _ready():
 	labelColors = get_node("/root/Variables").labelColors
 	SIDE_PANEL.visible = false
 	initializeLegend()
-	
-	for label in labeledPoints.keys():
-		var l = Label.new()
-		l.text = label
-		LABEL_SETTINGS.add_child(l)
+	initializeLabelUiElements()
+
+
+func _process(_delta):
+	if showFps:
+		FPS_COUNTER.set_text(str(Engine.get_frames_per_second()) + "fps")
 
 
 func initializeLegend():
@@ -35,11 +36,37 @@ func initializeLegend():
 		LEGEND_LABEL.pop()
 		
 	LEGEND_LABEL.pop()
-	
-	
-func _process(_delta):
-	if showFps:
-		FPS_COUNTER.set_text(str(Engine.get_frames_per_second()) + "fps")
+
+
+func initializeLabelUiElements():
+	for label in labeledPoints.keys():
+		if len(labeledPoints[label]) == 0: continue
+		var labelName = Label.new()
+		labelName.text = label
+		labelName.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		labelName.add_theme_font_size_override("font_size", 14)
+		LABEL_SETTINGS.add_child(labelName)
+		
+		var labelColorPicker = ColorPickerButton.new()
+		labelColorPicker.color = labelColors[label]
+		labelColorPicker.text = " "
+		LABEL_SETTINGS.add_child(labelColorPicker)
+		
+		var pointSizeLabel = Label.new()
+		pointSizeLabel.add_theme_font_size_override("font_size", 12)
+		pointSizeLabel.text = "Point size"
+		pointSizeLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		LABEL_SETTINGS.add_child(pointSizeLabel)
+		
+		var pointSizeSlider = HSlider.new()
+		pointSizeSlider.min_value = 0
+		pointSizeSlider.max_value = 10
+		pointSizeSlider.value = 1
+		pointSizeSlider.scrollable = false
+		LABEL_SETTINGS.add_child(pointSizeSlider)
+		
+		var divider = HSeparator.new()
+		LABEL_SETTINGS.add_child(divider)
 
 
 func _input(event):

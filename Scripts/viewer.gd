@@ -12,6 +12,7 @@ var labelColors = {}
 
 @onready var worldEnvironment = $WorldEnvironment
 
+
 func _ready():
 	worldEnvironment.environment.background_color = Color(0, 0, 0)
 	labeledPoints = get_node("/root/Variables").labeledPoints
@@ -54,7 +55,7 @@ func createMesh():
 
 		instance.set_material_override(matNew)
 		add_child(instance)
-	
+
 
 func _on_sky_color_picker_color_changed(color):
 	worldEnvironment.environment.background_color = color
