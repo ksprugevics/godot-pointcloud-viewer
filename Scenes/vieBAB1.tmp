@@ -300,6 +300,8 @@ offset_bottom = -183.0
 grow_horizontal = 0
 grow_vertical = 2
 bbcode_enabled = true
+text = "[center]Statistics
+"
 
 [connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/FpsCheckbox" to="Control" method="_on_fps_checkbox_toggled"]
 [connection signal="toggled" from="Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/VsyncCheckbox" to="Control" method="_on_vsync_checkbox_toggled"]

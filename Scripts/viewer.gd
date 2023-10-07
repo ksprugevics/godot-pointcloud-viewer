@@ -3,7 +3,7 @@ extends Node3D
 var rng = RandomNumberGenerator.new()
 
 var baseMaterial
-var pointSize = 3
+var initialPointSize = 3
 
 var labeledPoints = {}
 var extent = []
@@ -27,7 +27,7 @@ func _ready():
 func initializeMeshMaterial():
 	baseMaterial = StandardMaterial3D.new()
 	baseMaterial.use_point_size = true
-	baseMaterial.point_size = pointSize
+	baseMaterial.point_size = initialPointSize
 	baseMaterial.disable_ambient_light = true
 	baseMaterial.no_depth_test = true
 	baseMaterial.roughness = 0
@@ -36,10 +36,10 @@ func initializeMeshMaterial():
 
 
 func createMesh():
+	var meshes = {}
+	var labelPointSizes = {}
+	
 	for label in labeledPoints.keys():
-		print(label)
-		print(len(labeledPoints[label]))
-		
 		var array_mesh = ArrayMesh.new()
 		var meshPoints = []
 		meshPoints.resize(Mesh.ARRAY_MAX)
@@ -55,6 +55,12 @@ func createMesh():
 
 		instance.set_material_override(matNew)
 		add_child(instance)
+		
+		meshes[label] = instance
+		labelPointSizes[label] = initialPointSize
+		
+	get_node("/root/Variables").meshes = meshes
+	get_node("/root/Variables").labelPointSizes = labelPointSizes
 
 
 func _on_sky_color_picker_color_changed(color):

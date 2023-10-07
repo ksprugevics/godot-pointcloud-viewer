@@ -10,9 +10,11 @@ extends Control
 var showFps = true
 var labeledPoints = null
 var labelColors
+var labelPointSizes
 
 
 func _ready():
+	process_priority = 10
 	labeledPoints = get_node("/root/Variables").labeledPoints
 	labelColors = get_node("/root/Variables").labelColors
 	SIDE_PANEL.visible = false
@@ -25,17 +27,25 @@ func _process(_delta):
 		FPS_COUNTER.set_text(str(Engine.get_frames_per_second()) + "fps")
 
 
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		SIDE_PANEL.visible = !SIDE_PANEL.visible
+
+
 func initializeLegend():
+	LEGEND_LABEL.clear()
+	LEGEND_LABEL.add_text("Statistics\n")
 	LEGEND_LABEL.push_font_size(12)
 	
 	for label in labeledPoints.keys():
 		var count = labeledPoints.get(label).size()
 		if count < 1: continue
 		LEGEND_LABEL.push_color(labelColors[label])
-		LEGEND_LABEL.add_text(label + " : " + str(count) + "\n")
+		LEGEND_LABEL.add_text(str(count) + " : " + label + "\n") # need to be reversed, because text direction right to left
 		LEGEND_LABEL.pop()
 		
 	LEGEND_LABEL.pop()
+	LEGEND_LABEL.text_direction = TEXT_DIRECTION_RTL
 
 
 func initializeLabelUiElements():
@@ -50,6 +60,7 @@ func initializeLabelUiElements():
 		var labelColorPicker = ColorPickerButton.new()
 		labelColorPicker.color = labelColors[label]
 		labelColorPicker.text = " "
+		labelColorPicker.connect("color_changed", updateColors.bind(label))
 		LABEL_SETTINGS.add_child(labelColorPicker)
 		
 		var pointSizeLabel = Label.new()
@@ -61,17 +72,36 @@ func initializeLabelUiElements():
 		var pointSizeSlider = HSlider.new()
 		pointSizeSlider.min_value = 0
 		pointSizeSlider.max_value = 10
-		pointSizeSlider.value = 1
+		pointSizeSlider.value = 3
 		pointSizeSlider.scrollable = false
+		pointSizeSlider.connect("value_changed", updatePointSizes.bind(label))
 		LABEL_SETTINGS.add_child(pointSizeSlider)
 		
 		var divider = HSeparator.new()
 		LABEL_SETTINGS.add_child(divider)
 
 
-func _input(event):
-	if event.is_action_pressed("ui_cancel"):
-		SIDE_PANEL.visible = !SIDE_PANEL.visible
+func updateColors(color, label):
+	labelPointSizes = get_node("/root/Variables").labelPointSizes
+	labelColors = get_node("/root/Variables").labelColors
+	labelColors[label] = color
+	refreshMeshes()
+
+
+func updatePointSizes(size, label):
+	labelPointSizes = get_node("/root/Variables").labelPointSizes
+	labelColors = get_node("/root/Variables").labelColors
+	labelPointSizes[label] = size
+	refreshMeshes()
+
+
+func refreshMeshes():
+	var meshes = get_node("/root/Variables").meshes
+	for label in meshes.keys():
+		var mesh = meshes[label]
+		mesh.material_override.albedo_color = labelColors[label]
+		mesh.material_override.point_size = labelPointSizes[label]
+	initializeLegend()
 
 
 func _on_fps_checkbox_toggled(button_pressed):

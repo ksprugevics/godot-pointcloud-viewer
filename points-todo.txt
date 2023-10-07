@@ -1,7 +1,13 @@
 - custom delimiter
-- local camera orbit
-- global camera orbit (extent)
+- save settings
+- square points -> round points?
+
+- orbiting animations
+	- local camera orbit
+	- global camera orbit (extent)
 
 - in game menu with
-	- change colors, point size for each label individually
 	- change basic material settings, shading
+
+- quick reset to main menu
+- camera starting position at middle of extent
