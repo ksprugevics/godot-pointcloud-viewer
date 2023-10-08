@@ -1,5 +1,7 @@
 extends Node3D
 
+const MENU_SCENE = "res://scenes//main_menu.tscn"
+
 var rng = RandomNumberGenerator.new()
 
 var baseMaterial
@@ -11,6 +13,7 @@ var useLabels = false
 var labelColors = {}
 
 @onready var worldEnvironment = $WorldEnvironment
+@onready var cameraBody = $CharacterBody3D
 
 
 func _ready():
@@ -22,7 +25,8 @@ func _ready():
 	
 	initializeMeshMaterial()
 	createMesh()
-
+	placeCamera()
+	
 
 func initializeMeshMaterial():
 	baseMaterial = StandardMaterial3D.new()
@@ -63,5 +67,19 @@ func createMesh():
 	get_node("/root/Variables").labelPointSizes = labelPointSizes
 
 
+func placeCamera():
+	cameraBody.transform.origin = Vector3(extent[0] / 2, extent[3] + 5, extent[4] / 2)
+	
+
 func _on_sky_color_picker_color_changed(color):
 	worldEnvironment.environment.background_color = color
+
+
+func _on_reload_button_pressed():
+	get_node("/root/Variables").labeledPoints = {}
+	get_node("/root/Variables").extent = []
+	get_node("/root/Variables").useLabels = false
+	get_node("/root/Variables").labelColors = {}
+	get_node("/root/Variables").meshes = {}
+	get_node("/root/Variables").labelPointSizes = {}
+	get_tree().change_scene_to_file(MENU_SCENE)

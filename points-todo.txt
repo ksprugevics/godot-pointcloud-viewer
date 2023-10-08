@@ -1,14 +1,15 @@
-- save settings + seperator
-- square points -> round points?
-
+- save in game settings
+- seperator max length -> 1
+- add an exit button in main menu
+	
+	
 - orbiting animations
 	- local camera orbit
 	- global camera orbit (extent)
 
-- in game menu with
-	- change basic material settings, shading
 
-- quick reset to main menu
-- camera starting position at middle of extent
-- revise labels, create help button
+
 - consider console for debugging with some useful debugging information
+
+- revise labels, create help button, add version
+- square points -> round points? (probably need a custom shader for this (lots of work and square works fine for now))

@@ -14,8 +14,8 @@ const UNLABELED_LABEL = "__UNLABELED__"
 @onready var SEPERATOR_EDIT = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/SeperatorTextEdit
 
 var pointcloudPath = ""
-var seperator = " "
-var extent = [INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX] # xmin, xmax, zmin zmax, ymin, ymax
+var seperator = ""
+var extent = [INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX] # xmin, xmax, ymin, ymax, zmin, zmax
 var useLabels = false
 var labeledPoints = {}
 var labelColors = {}
@@ -28,6 +28,21 @@ func _ready():
 	LABEL_CHECK_BOX.visible = false
 	SEPERATOR_CONTAINER.visible = false
 	get_tree().get_root().files_dropped.connect(_on_files_dropped)
+	readConfig()
+
+
+func readConfig():
+	seperator = get_node("/root/Variables").seperator
+	SEPERATOR_EDIT.text = seperator
+	
+	var loadLabels = get_node("/root/Variables").loadLabels
+	if loadLabels != null:
+		useLabels = loadLabels
+	LABEL_CHECK_BOX.button_pressed = useLabels
+	
+	var lastPointcloudPath = get_node("/root/Variables").lastPointcloudPath
+	if lastPointcloudPath != null and lastPointcloudPath != "":
+		_on_pointcloud_file_browser_file_selected(lastPointcloudPath)
 
 
 func _on_file_browser_button_pressed():
@@ -40,6 +55,7 @@ func _on_pointcloud_file_browser_file_selected(path):
 	SEPERATOR_CONTAINER.visible = true
 	TEXT_LABEL.text = "Selected:\n" + path
 	pointcloudPath = path
+	get_node("/root/Variables").lastPointcloudPath = pointcloudPath
 
 
 func _on_files_dropped(files):
@@ -52,6 +68,7 @@ func _on_files_dropped(files):
 
 func _on_label_check_box_toggled(_button_pressed):
 	useLabels = !useLabels
+	get_node("/root/Variables").loadLabels = useLabels
 
 
 func _on_load_button_pressed():
@@ -67,11 +84,17 @@ func _on_load_button_pressed():
 
 
 func processLoad():
+	saveConfig()
 	labeledPoints[UNLABELED_LABEL] = PackedVector3Array()
 	loadPointcloudFile(pointcloudPath)
 	translatePointcloud()
 	generateRandomColors()
 	updateGlobalVariables()
+
+
+func saveConfig():
+	get_node("/root/Variables").seperator = seperator
+	get_node("/root/Variables").saveToConfig()
 
 
 func loadPointcloudFile(filePath, limit=null):
@@ -116,6 +139,9 @@ func translatePointcloud():
 			var normalized_z = labeledPoints[label][i][2]- extent[5]
 			labeledPoints[label][i][0] = normalized_x
 			labeledPoints[label][i][2] = normalized_z
+
+	var translatedExtent = [extent[0] - extent[1], 0, extent[2], extent[3], extent[4] - extent[5], 0]
+	extent = translatedExtent
 
 
 func generateRandomColors():
