@@ -1,5 +1,4 @@
-- custom delimiter
-- save settings
+- save settings + seperator
 - square points -> round points?
 
 - orbiting animations
@@ -11,3 +10,5 @@
 
 - quick reset to main menu
 - camera starting position at middle of extent
+- revise labels, create help button
+- consider console for debugging with some useful debugging information

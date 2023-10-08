@@ -10,9 +10,11 @@ const UNLABELED_LABEL = "__UNLABELED__"
 @onready var LOADING_LABEL = $CenterContainer/VBoxContainer/VBoxContainer/LoadingLabel
 @onready var FILE_BRWOSER_BUTTON = $CenterContainer/VBoxContainer/VBoxContainer/FileBrowserButton
 @onready var LABEL_CHECK_BOX = $CenterContainer/VBoxContainer/VBoxContainer/LabelCheckBox
+@onready var SEPERATOR_CONTAINER = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer
+@onready var SEPERATOR_EDIT = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/SeperatorTextEdit
 
 var pointcloudPath = ""
-var delimiter = " "
+var seperator = " "
 var extent = [INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX] # xmin, xmax, zmin zmax, ymin, ymax
 var useLabels = false
 var labeledPoints = {}
@@ -24,6 +26,7 @@ func _ready():
 	LOAD_BUTTON.visible = false
 	LOADING_LABEL.visible = false
 	LABEL_CHECK_BOX.visible = false
+	SEPERATOR_CONTAINER.visible = false
 	get_tree().get_root().files_dropped.connect(_on_files_dropped)
 
 
@@ -34,6 +37,7 @@ func _on_file_browser_button_pressed():
 func _on_pointcloud_file_browser_file_selected(path):
 	LOAD_BUTTON.visible = true
 	LABEL_CHECK_BOX.visible = true
+	SEPERATOR_CONTAINER.visible = true
 	TEXT_LABEL.text = "Selected:\n" + path
 	pointcloudPath = path
 
@@ -54,7 +58,9 @@ func _on_load_button_pressed():
 	FILE_BRWOSER_BUTTON.visible = false
 	LOAD_BUTTON.visible = false
 	LABEL_CHECK_BOX.visible = false
+	SEPERATOR_CONTAINER.visible = false
 	LOADING_LABEL.visible = true
+	seperator = SEPERATOR_EDIT.text
 	await get_tree().create_timer(0.2).timeout # without this UI doesnt get a chance to update
 	processLoad()
 	get_tree().change_scene_to_file(VIEWER_SCENE)
@@ -73,7 +79,7 @@ func loadPointcloudFile(filePath, limit=null):
 	limit = file.get_length() if limit == null else limit
 
 	for i in range(limit):
-		var line = file.get_csv_line(delimiter)
+		var line = file.get_csv_line(seperator)
 		if len(line) < 3: continue
 		
 		var point = Vector3(float(line[0]), float(line[2]), float(line[1]))
