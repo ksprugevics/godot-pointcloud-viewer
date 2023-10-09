@@ -14,9 +14,9 @@ const UNLABELED_LABEL = "__UNLABELED__"
 @onready var SEPERATOR_EDIT = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/SeperatorTextEdit
 
 var pointcloudPath = ""
-var seperator = ""
+var seperator
 var extent = [INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX, INT64_MAX, -INT64_MAX] # xmin, xmax, ymin, ymax, zmin, zmax
-var useLabels = false
+var useLabels
 var labeledPoints = {}
 var labelColors = {}
 
@@ -35,10 +35,8 @@ func readConfig():
 	seperator = get_node("/root/Variables").seperator
 	SEPERATOR_EDIT.text = seperator
 	
-	var loadLabels = get_node("/root/Variables").loadLabels
-	if loadLabels != null:
-		useLabels = loadLabels
-	LABEL_CHECK_BOX.button_pressed = useLabels
+	useLabels = get_node("/root/Variables").useLabels
+	LABEL_CHECK_BOX.set_pressed_no_signal(useLabels)
 	
 	var lastPointcloudPath = get_node("/root/Variables").lastPointcloudPath
 	if lastPointcloudPath != null and lastPointcloudPath != "":
@@ -68,7 +66,7 @@ func _on_files_dropped(files):
 
 func _on_label_check_box_toggled(_button_pressed):
 	useLabels = !useLabels
-	get_node("/root/Variables").loadLabels = useLabels
+	get_node("/root/Variables").useLabels = useLabels
 
 
 func _on_load_button_pressed():
@@ -84,12 +82,12 @@ func _on_load_button_pressed():
 
 
 func processLoad():
-	saveConfig()
 	labeledPoints[UNLABELED_LABEL] = PackedVector3Array()
 	loadPointcloudFile(pointcloudPath)
 	translatePointcloud()
 	generateRandomColors()
 	updateGlobalVariables()
+	saveConfig()
 
 
 func saveConfig():

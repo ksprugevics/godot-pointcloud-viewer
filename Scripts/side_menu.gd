@@ -7,7 +7,17 @@ extends Control
 @onready var LEGEND_LABEL = $Legend
 @onready var LABEL_SETTINGS = $Panel/ScrollContainer/VBoxContainer/LabelSettings
 
+@onready var FPS_CHECKBOX = $Panel/ScrollContainer/VBoxContainer/DisplaySettings/FpsCheckbox
+@onready var VSYNC_CHECKBOX = $Panel/ScrollContainer/VBoxContainer/DisplaySettings/VsyncCheckbox
+@onready var FULLSCREEN_CHECKBOX = $Panel/ScrollContainer/VBoxContainer/DisplaySettings/FullscreenCkecbox
+@onready var CONTROLS_CHECKBOX = $Panel/ScrollContainer/VBoxContainer/DisplaySettings/ControlsCheckbox
+
+
 var showFps = true
+var useVsync = true
+var useFullscreen = false
+var showControls = true
+
 var labeledPoints = null
 var labelColors
 var labelPointSizes
@@ -15,11 +25,36 @@ var labelPointSizes
 
 func _ready():
 	process_priority = 10
-	labeledPoints = get_node("/root/Variables").labeledPoints
-	labelColors = get_node("/root/Variables").labelColors
 	SIDE_PANEL.visible = false
+
+	initializeConfig()
 	initializeLegend()
 	initializeLabelUiElements()
+
+
+func initializeConfig():
+	labeledPoints = get_node("/root/Variables").labeledPoints
+	labelColors = get_node("/root/Variables").labelColors
+	
+	var showFpsSetting = get_node("/root/Variables").showFps
+	if showFpsSetting != null:
+		showFps = showFpsSetting
+	FPS_CHECKBOX.set_pressed_no_signal(showFps)
+	
+	var useVsyncSetting = get_node("/root/Variables").useVsync
+	if useVsyncSetting != null:
+		useVsync = useVsyncSetting
+	VSYNC_CHECKBOX.button_pressed = useVsync
+	
+	var useFullscreenSetting = get_node("/root/Variables").useFullscreen
+	if useFullscreenSetting != null:
+		useFullscreen = useFullscreenSetting
+	FULLSCREEN_CHECKBOX.button_pressed = useFullscreen
+	
+	var showControlsSetting = get_node("/root/Variables").showControls
+	if showControlsSetting != null:
+		showControls = showControlsSetting
+	CONTROLS_CHECKBOX.button_pressed = showControls
 
 
 func _process(_delta):
@@ -105,12 +140,9 @@ func refreshMeshes():
 
 
 func _on_fps_checkbox_toggled(button_pressed):
-	if button_pressed:
-		showFps = true
-		FPS_COUNTER.visible = true
-	else:
-		showFps = false
-		FPS_COUNTER.visible = false 
+	FPS_COUNTER.visible = button_pressed
+	showFps = button_pressed
+	saveConfig()
 
 
 func _on_vsync_checkbox_toggled(button_pressed):
@@ -118,6 +150,8 @@ func _on_vsync_checkbox_toggled(button_pressed):
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
 	else:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	useVsync = button_pressed
+	saveConfig()
 
 
 func _on_fullscreen_ckecbox_toggled(button_pressed):
@@ -125,17 +159,14 @@ func _on_fullscreen_ckecbox_toggled(button_pressed):
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	useFullscreen = button_pressed
+	saveConfig()
 
 
 func _on_controls_checkbox_toggled(button_pressed):
-	if button_pressed:
-		CONTROLS_LABEL.visible = true
-	else:
-		CONTROLS_LABEL.visible = false
-
-
-func _on_exit_button_pressed():
-	get_tree().quit()
+	CONTROLS_LABEL.visible = button_pressed
+	showControls = button_pressed
+	saveConfig()
 
 
 func _on_labels_checkbox_toggled(button_pressed):
@@ -143,3 +174,16 @@ func _on_labels_checkbox_toggled(button_pressed):
 		LEGEND_LABEL.visible = true
 	else:
 		LEGEND_LABEL.visible = false
+
+
+func _on_exit_button_pressed():
+	saveConfig()
+	get_tree().quit()
+
+
+func saveConfig():
+	get_node("/root/Variables").showFps = showFps
+	get_node("/root/Variables").useVsync = useVsync
+	get_node("/root/Variables").useFullscreen = useFullscreen
+	get_node("/root/Variables").showControls = showControls
+	get_node("/root/Variables").saveToConfig()

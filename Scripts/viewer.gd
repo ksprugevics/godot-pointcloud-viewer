@@ -9,7 +9,7 @@ var initialPointSize = 3
 
 var labeledPoints = {}
 var extent = []
-var useLabels = false
+var useLabels
 var labelColors = {}
 
 @onready var worldEnvironment = $WorldEnvironment
@@ -78,8 +78,9 @@ func _on_sky_color_picker_color_changed(color):
 func _on_reload_button_pressed():
 	get_node("/root/Variables").labeledPoints = {}
 	get_node("/root/Variables").extent = []
-	get_node("/root/Variables").useLabels = false
+	get_node("/root/Variables").useLabels = useLabels
 	get_node("/root/Variables").labelColors = {}
 	get_node("/root/Variables").meshes = {}
 	get_node("/root/Variables").labelPointSizes = {}
+	get_node("/root/Variables").saveToConfig()
 	get_tree().change_scene_to_file(MENU_SCENE)

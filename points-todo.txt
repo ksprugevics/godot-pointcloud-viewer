@@ -1,5 +1,5 @@
-- save in game settings
-- seperator max length -> 1
+- save in game settings                   <-- YOU ARE HERE
+- seperator max length -> 1, should also check that its not empty
 - add an exit button in main menu
 	
 	
