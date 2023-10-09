@@ -1,17 +1,50 @@
 extends CharacterBody3D
 
 
+
 @onready var camera:Camera3D = $Camera
+
+@onready var FOV_SLIDER = get_node("../Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/FovSlider")
+@onready var SENSITIVITY_SLIDER = get_node("../Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/SensitivitySlider")
+@onready var SPEED_SLIDER = get_node("../Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/MovementSpeedSlider")
+@onready var FAST_SLIDER = get_node("../Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/FastMoveSlider")
+
+
+const sensitivityConstant = 0.0005
 
 var speed = 20.0
 var speedMultiplier = 2.0
-var mouseSensitivity = 2.5 * 0.0005
+var mouseSensitivity = 0.00125
 var fieldOfView = 75
 var menuOpen = false
 
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	initializeConfig()
+
+
+func initializeConfig():
+	var mouseSensitivitySetting = get_node("/root/Variables").mouseSensitivity
+	if mouseSensitivitySetting != null:
+		mouseSensitivity = mouseSensitivitySetting
+	SENSITIVITY_SLIDER.set_value_no_signal(mouseSensitivity / sensitivityConstant)
+	
+	var fovSetting = get_node("/root/Variables").fov
+	if fovSetting != null:
+		fieldOfView = fovSetting
+	FOV_SLIDER.set_value_no_signal(fieldOfView)
+	camera.fov = fieldOfView
+	
+	var speedSetting = get_node("/root/Variables").cameraSpeed
+	if speedSetting != null:
+		speed = speedSetting
+	SPEED_SLIDER.set_value_no_signal(speed)
+	
+	var multiplierSetting = get_node("/root/Variables").speedMultiplier
+	if multiplierSetting != null:
+		speedMultiplier = multiplierSetting
+	FAST_SLIDER.set_value_no_signal(speedMultiplier)
 
 
 func _input(event):
@@ -59,17 +92,42 @@ func _physics_process(_delta):
 	move_and_slide()
 
 
+func _on_fov_slider_value_changed(value):
+	camera.fov = value
+	fieldOfView = value
+
+
+func _on_fov_slider_drag_ended(value_changed):
+	saveConfig()
+
+
 func _on_sensitivity_slider_value_changed(value):
-	mouseSensitivity = value * 0.0005
+	mouseSensitivity = value * sensitivityConstant
+
+
+func _on_sensitivity_slider_drag_ended(value_changed):
+	saveConfig()
 
 
 func _on_movement_speed_slider_value_changed(value):
 	speed = value
 
 
+func _on_movement_speed_slider_drag_ended(value_changed):
+	saveConfig()
+
+
 func _on_fast_move_slider_value_changed(value):
 	speedMultiplier = value
 
 
-func _on_fov_slider_value_changed(value):
-	camera.fov = value
+func _on_fast_move_slider_drag_ended(value_changed):
+	saveConfig()
+
+
+func saveConfig():
+	get_node("/root/Variables").fov = fieldOfView
+	get_node("/root/Variables").mouseSensitivity = mouseSensitivity
+	get_node("/root/Variables").cameraSpeed = speed
+	get_node("/root/Variables").speedMultiplier = speedMultiplier
+	get_node("/root/Variables").saveToConfig()

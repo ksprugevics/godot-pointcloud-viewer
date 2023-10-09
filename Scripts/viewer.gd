@@ -69,7 +69,7 @@ func createMesh():
 
 func placeCamera():
 	cameraBody.transform.origin = Vector3(extent[0] / 2, extent[3] + 5, extent[4] / 2)
-	
+
 
 func _on_sky_color_picker_color_changed(color):
 	worldEnvironment.environment.background_color = color

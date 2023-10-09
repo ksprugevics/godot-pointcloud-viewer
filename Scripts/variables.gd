@@ -20,10 +20,10 @@ var useVsync = true
 var useFullscreen = false
 var showControls = true
 
-#fov
-#mouseSensitivity
-#cameraSpeed
-#speedMultiplier
+var fov = 75
+var mouseSensitivity = 0.00125
+var cameraSpeed = 20.0
+var speedMultiplier = 2.0
 
 #backgroundColor
 
@@ -42,7 +42,10 @@ func _ready():
 	useVsync = config.get_value(SETTINGS_STRING, "useVsync", true)
 	useFullscreen = config.get_value(SETTINGS_STRING, "useFullscreen", false)
 	showControls = config.get_value(SETTINGS_STRING, "showControls", true)
-	
+	mouseSensitivity = config.get_value(SETTINGS_STRING, "mouseSensitivity", 0.00125)
+	fov = config.get_value(SETTINGS_STRING, "fov", 75)
+	cameraSpeed = config.get_value(SETTINGS_STRING, "cameraSpeed", 75)
+	speedMultiplier = config.get_value(SETTINGS_STRING, "speedMultiplier", 2.0)
 
 
 func saveToConfig():
@@ -54,4 +57,8 @@ func saveToConfig():
 	config.set_value(SETTINGS_STRING, "useVsync", useVsync)
 	config.set_value(SETTINGS_STRING, "useFullscreen", useFullscreen)
 	config.set_value(SETTINGS_STRING, "showControls", showControls)
+	config.set_value(SETTINGS_STRING, "mouseSensitivity", mouseSensitivity)
+	config.set_value(SETTINGS_STRING, "fov", fov)
+	config.set_value(SETTINGS_STRING, "cameraSpeed", cameraSpeed)
+	config.set_value(SETTINGS_STRING, "speedMultiplier", speedMultiplier)
 	config.save(CONFIG_PATH)
