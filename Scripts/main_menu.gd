@@ -9,8 +9,10 @@ const UNLABELED_LABEL = "__UNLABELED__"
 @onready var LOAD_BUTTON = $CenterContainer/VBoxContainer/VBoxContainer/LoadButton
 @onready var LOADING_LABEL = $CenterContainer/VBoxContainer/VBoxContainer/LoadingLabel
 @onready var FILE_BRWOSER_BUTTON = $CenterContainer/VBoxContainer/VBoxContainer/FileBrowserButton
+@onready var EXIT_BUTTON = $CenterContainer/VBoxContainer/VBoxContainer/ExitButton
 @onready var LABEL_CHECK_BOX = $CenterContainer/VBoxContainer/VBoxContainer/LabelCheckBox
 @onready var SEPERATOR_CONTAINER = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer
+@onready var SEPERATOR_LABEL = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/Label
 @onready var SEPERATOR_EDIT = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/SeperatorTextEdit
 
 var pointcloudPath = ""
@@ -27,6 +29,7 @@ func _ready():
 	LOADING_LABEL.visible = false
 	LABEL_CHECK_BOX.visible = false
 	SEPERATOR_CONTAINER.visible = false
+	
 	get_tree().get_root().files_dropped.connect(_on_files_dropped)
 	readConfig()
 
@@ -70,15 +73,26 @@ func _on_label_check_box_toggled(_button_pressed):
 
 
 func _on_load_button_pressed():
+	if !validateSeperator(): return
 	FILE_BRWOSER_BUTTON.visible = false
 	LOAD_BUTTON.visible = false
 	LABEL_CHECK_BOX.visible = false
 	SEPERATOR_CONTAINER.visible = false
+	EXIT_BUTTON.visible = false
 	LOADING_LABEL.visible = true
-	seperator = SEPERATOR_EDIT.text
+	
 	await get_tree().create_timer(0.2).timeout # without this UI doesnt get a chance to update
 	processLoad()
 	get_tree().change_scene_to_file(VIEWER_SCENE)
+
+
+func validateSeperator():
+	seperator = SEPERATOR_EDIT.text
+	if (len(seperator) != 1):
+		SEPERATOR_LABEL.text += "Must be exactly 1 symbol, e.g. ','"
+		SEPERATOR_LABEL.add_theme_color_override("font_color", Color.RED)
+		return false
+	return true
 
 
 func processLoad():
@@ -152,3 +166,8 @@ func updateGlobalVariables():
 	get_node("/root/Variables").extent = extent
 	get_node("/root/Variables").useLabels = useLabels
 	get_node("/root/Variables").labelColors = labelColors
+
+
+func _on_exit_button_pressed():
+	saveConfig()
+	get_tree().quit()

@@ -1,12 +1,6 @@
-- seperator max length -> 1, should also check that its not empty
-- add an exit button in main menu
-	
-	
 - orbiting animations
 	- local camera orbit
 	- global camera orbit (extent)
-
-
 
 - consider console for debugging with some useful debugging information
 
