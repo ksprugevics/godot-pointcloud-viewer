@@ -324,5 +324,6 @@ bbcode_enabled = true
 [connection signal="drag_ended" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/FastMoveSlider" to="CharacterBody3D" method="_on_fast_move_slider_drag_ended"]
 [connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/FastMoveSlider" to="CharacterBody3D" method="_on_fast_move_slider_value_changed"]
 [connection signal="color_changed" from="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings/SkyColorPicker" to="." method="_on_sky_color_picker_color_changed"]
+[connection signal="popup_closed" from="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings/SkyColorPicker" to="." method="_on_sky_color_picker_popup_closed"]
 [connection signal="pressed" from="Control/Panel/VBoxContainer/ReloadButton" to="." method="_on_reload_button_pressed"]
 [connection signal="pressed" from="Control/Panel/VBoxContainer/ExitButton" to="Control" method="_on_exit_button_pressed"]

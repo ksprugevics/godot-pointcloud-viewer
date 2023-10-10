@@ -6,6 +6,7 @@ var rng = RandomNumberGenerator.new()
 
 var baseMaterial
 var initialPointSize = 3
+var backgroundColor
 
 var labeledPoints = {}
 var extent = []
@@ -14,6 +15,7 @@ var labelColors = {}
 
 @onready var worldEnvironment = $WorldEnvironment
 @onready var cameraBody = $CharacterBody3D
+@onready var BG_COLOR_PICKER = get_node("Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings/SkyColorPicker")
 
 
 func _ready():
@@ -23,10 +25,19 @@ func _ready():
 	useLabels = get_node("/root/Variables").useLabels
 	labelColors = get_node("/root/Variables").labelColors
 	
+	initializeConfig()
 	initializeMeshMaterial()
 	createMesh()
 	placeCamera()
-	
+
+
+func initializeConfig():
+	var backgroundColorSetting = get_node("/root/Variables").backgroundColor
+	if backgroundColorSetting != null:
+		backgroundColor = backgroundColorSetting
+	worldEnvironment.environment.background_color = backgroundColor
+	BG_COLOR_PICKER.color = backgroundColor
+
 
 func initializeMeshMaterial():
 	baseMaterial = StandardMaterial3D.new()
@@ -73,6 +84,16 @@ func placeCamera():
 
 func _on_sky_color_picker_color_changed(color):
 	worldEnvironment.environment.background_color = color
+	backgroundColor = color
+
+
+func _on_sky_color_picker_popup_closed():
+	saveConfig()
+
+
+func saveConfig():
+	get_node("/root/Variables").backgroundColor = backgroundColor
+	get_node("/root/Variables").saveToConfig()
 
 
 func _on_reload_button_pressed():

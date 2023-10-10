@@ -25,7 +25,7 @@ var mouseSensitivity = 0.00125
 var cameraSpeed = 20.0
 var speedMultiplier = 2.0
 
-#backgroundColor
+var backgroundColor = Color(0, 0, 0)
 
 
 func _ready():
@@ -46,6 +46,7 @@ func _ready():
 	fov = config.get_value(SETTINGS_STRING, "fov", 75)
 	cameraSpeed = config.get_value(SETTINGS_STRING, "cameraSpeed", 75)
 	speedMultiplier = config.get_value(SETTINGS_STRING, "speedMultiplier", 2.0)
+	backgroundColor = config.get_value(SETTINGS_STRING, "backgroundColor", Color(0, 0, 0))
 
 
 func saveToConfig():
@@ -61,4 +62,5 @@ func saveToConfig():
 	config.set_value(SETTINGS_STRING, "fov", fov)
 	config.set_value(SETTINGS_STRING, "cameraSpeed", cameraSpeed)
 	config.set_value(SETTINGS_STRING, "speedMultiplier", speedMultiplier)
+	config.set_value(SETTINGS_STRING, "backgroundColor", backgroundColor)
 	config.save(CONFIG_PATH)
