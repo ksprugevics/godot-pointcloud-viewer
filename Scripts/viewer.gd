@@ -2,6 +2,10 @@ extends Node3D
 
 const MENU_SCENE = "res://scenes//main_menu.tscn"
 
+@onready var worldEnvironment = $WorldEnvironment
+@onready var cameraBody = $CharacterBody3D
+@onready var BG_COLOR_PICKER = get_node("Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings/SkyColorPicker")
+
 var rng = RandomNumberGenerator.new()
 
 var baseMaterial
@@ -12,10 +16,6 @@ var labeledPoints = {}
 var extent = []
 var useLabels
 var labelColors = {}
-
-@onready var worldEnvironment = $WorldEnvironment
-@onready var cameraBody = $CharacterBody3D
-@onready var BG_COLOR_PICKER = get_node("Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings/SkyColorPicker")
 
 
 func _ready():

@@ -1,17 +1,16 @@
 extends Control
 
-
 @onready var SIDE_PANEL = $Panel
+@onready var LABEL_SETTINGS = $Panel/ScrollContainer/VBoxContainer/LabelSettings
+
 @onready var FPS_COUNTER = $FpsCounter
 @onready var CONTROLS_LABEL = $ControlsLabel
 @onready var LEGEND_LABEL = $Legend
-@onready var LABEL_SETTINGS = $Panel/ScrollContainer/VBoxContainer/LabelSettings
 
 @onready var FPS_CHECKBOX = $Panel/ScrollContainer/VBoxContainer/DisplaySettings/FpsCheckbox
 @onready var VSYNC_CHECKBOX = $Panel/ScrollContainer/VBoxContainer/DisplaySettings/VsyncCheckbox
 @onready var FULLSCREEN_CHECKBOX = $Panel/ScrollContainer/VBoxContainer/DisplaySettings/FullscreenCkecbox
 @onready var CONTROLS_CHECKBOX = $Panel/ScrollContainer/VBoxContainer/DisplaySettings/ControlsCheckbox
-
 
 var showFps = true
 var useVsync = true
@@ -54,8 +53,8 @@ func initializeConfig():
 	var showControlsSetting = get_node("/root/Variables").showControls
 	if showControlsSetting != null:
 		showControls = showControlsSetting
-	CONTROLS_CHECKBOX.button_pressed = showControls
-
+	CONTROLS_CHECKBOX.set_pressed_no_signal(showControls)
+	CONTROLS_LABEL.visible = showControls
 
 func _process(_delta):
 	if showFps:

@@ -1,14 +1,11 @@
 extends CharacterBody3D
 
-
-
 @onready var camera:Camera3D = $Camera
 
 @onready var FOV_SLIDER = get_node("../Control/Panel/ScrollContainer/VBoxContainer/DisplaySettings/FovSlider")
 @onready var SENSITIVITY_SLIDER = get_node("../Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/SensitivitySlider")
 @onready var SPEED_SLIDER = get_node("../Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/MovementSpeedSlider")
 @onready var FAST_SLIDER = get_node("../Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/FastMoveSlider")
-
 
 const sensitivityConstant = 0.0005
 

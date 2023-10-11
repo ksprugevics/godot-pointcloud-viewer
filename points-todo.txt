@@ -4,5 +4,6 @@
 
 - consider console for debugging with some useful debugging information
 
-- revise labels, create help button, add version
 - square points -> round points? (probably need a custom shader for this (lots of work and square works fine for now))
+
+- controls bug

@@ -1,19 +1,22 @@
 extends Control
 
 const VIEWER_SCENE = "res://scenes//viewer.tscn"
-const INT64_MAX = (1 << 63) - 1
 const UNLABELED_LABEL = "__UNLABELED__"
+const INT64_MAX = (1 << 63) - 1
 
 @onready var FILE_BROWSER = $CenterContainer/VBoxContainer/PointcloudFileBrowser
+@onready var SEPERATOR_CONTAINER = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer
+@onready var SEPERATOR_EDIT = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/SeperatorTextEdit
+@onready var HELP_PANEL = $HelpPanel
+
 @onready var TEXT_LABEL = $CenterContainer/VBoxContainer/Text
-@onready var LOAD_BUTTON = $CenterContainer/VBoxContainer/VBoxContainer/LoadButton
 @onready var LOADING_LABEL = $CenterContainer/VBoxContainer/VBoxContainer/LoadingLabel
+@onready var SEPERATOR_LABEL = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/Label
+
+@onready var LOAD_BUTTON = $CenterContainer/VBoxContainer/VBoxContainer/LoadButton
 @onready var FILE_BRWOSER_BUTTON = $CenterContainer/VBoxContainer/VBoxContainer/FileBrowserButton
 @onready var EXIT_BUTTON = $CenterContainer/VBoxContainer/VBoxContainer/ExitButton
 @onready var LABEL_CHECK_BOX = $CenterContainer/VBoxContainer/VBoxContainer/LabelCheckBox
-@onready var SEPERATOR_CONTAINER = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer
-@onready var SEPERATOR_LABEL = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/Label
-@onready var SEPERATOR_EDIT = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/SeperatorTextEdit
 
 var pointcloudPath = ""
 var seperator
@@ -29,12 +32,13 @@ func _ready():
 	LOADING_LABEL.visible = false
 	LABEL_CHECK_BOX.visible = false
 	SEPERATOR_CONTAINER.visible = false
+	HELP_PANEL.visible = false
 	
 	get_tree().get_root().files_dropped.connect(_on_files_dropped)
-	readConfig()
+	initializeConfig()
 
 
-func readConfig():
+func initializeConfig():
 	seperator = get_node("/root/Variables").seperator
 	SEPERATOR_EDIT.text = seperator
 	
@@ -44,6 +48,11 @@ func readConfig():
 	var lastPointcloudPath = get_node("/root/Variables").lastPointcloudPath
 	if lastPointcloudPath != null and lastPointcloudPath != "":
 		_on_pointcloud_file_browser_file_selected(lastPointcloudPath)
+
+
+func _on_help_button_pressed():
+	HELP_PANEL.visible = !HELP_PANEL.visible
+
 
 
 func _on_file_browser_button_pressed():
@@ -79,6 +88,7 @@ func _on_load_button_pressed():
 	LABEL_CHECK_BOX.visible = false
 	SEPERATOR_CONTAINER.visible = false
 	EXIT_BUTTON.visible = false
+	HELP_PANEL.visible = false
 	LOADING_LABEL.visible = true
 	
 	await get_tree().create_timer(0.2).timeout # without this UI doesnt get a chance to update
@@ -102,11 +112,6 @@ func processLoad():
 	generateRandomColors()
 	updateGlobalVariables()
 	saveConfig()
-
-
-func saveConfig():
-	get_node("/root/Variables").seperator = seperator
-	get_node("/root/Variables").saveToConfig()
 
 
 func loadPointcloudFile(filePath, limit=null):
@@ -166,6 +171,11 @@ func updateGlobalVariables():
 	get_node("/root/Variables").extent = extent
 	get_node("/root/Variables").useLabels = useLabels
 	get_node("/root/Variables").labelColors = labelColors
+
+
+func saveConfig():
+	get_node("/root/Variables").seperator = seperator
+	get_node("/root/Variables").saveToConfig()
 
 
 func _on_exit_button_pressed():
