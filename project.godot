@@ -10,9 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Godot-point-cloud"
+config/name="Godot point cloud viewer"
 run/main_scene="res://Scenes/main_menu.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
+boot_splash/bg_color=Color(0.180392, 0.109804, 0.168627, 1)
 config/icon="res://icon.svg"
 
 [autoload]
