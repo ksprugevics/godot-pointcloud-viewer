@@ -184,7 +184,7 @@ offset_top = -27.0
 offset_right = 106.0
 offset_bottom = -1.0
 grow_vertical = 0
-text = "Version 1.0.0"
+text = "Version 1.0.0.0"
 
 [connection signal="file_selected" from="CenterContainer/VBoxContainer/PointcloudFileBrowser" to="." method="_on_pointcloud_file_browser_file_selected"]
 [connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/LabelCheckBox" to="." method="_on_label_check_box_toggled"]

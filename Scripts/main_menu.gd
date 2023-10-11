@@ -1,6 +1,6 @@
 extends Control
 
-const VIEWER_SCENE = "res://scenes//viewer.tscn"
+const VIEWER_SCENE = "res://Scenes//viewer.tscn"
 const UNLABELED_LABEL = "__UNLABELED__"
 const INT64_MAX = (1 << 63) - 1
 

@@ -1,6 +1,6 @@
 extends Node3D
 
-const MENU_SCENE = "res://scenes//main_menu.tscn"
+const MENU_SCENE = "res://Scenes//main_menu.tscn"
 
 @onready var worldEnvironment = $WorldEnvironment
 @onready var cameraBody = $CharacterBody3D
