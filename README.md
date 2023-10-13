@@ -16,18 +16,26 @@ This application can render 3D pointclouds with label support, and you can inspe
 
 ### How to use
 
+### How to use
+
 1. Download the latest release
 2. Prepare your pointcloud file
+
     2.1. File extension should be *.txt*
+    
     2.2. Points should be seperated by a new line
+    
     2.3. Each line should be in the following format:
         *x,y,z,label(optional)*
+        
     2.3.1. You can choose what seperator you use, but it has to be one symbol - cannot be *comma* + *space* as it's two symbols (also tab currently doesn't work)
+    
     2.3.2. label is optional
+    
     2.3.3. *z* corresponds to height
-3. Open the application, select your pointcloud file
-4. Basic controls are shown on the screen, settings can be found by pressing the ESC button
-
+    
+4. Open the application, select your pointcloud file
+5. Basic controls are shown on the screen, settings can be found by pressing the ESC button
 ### Future work
 I don't plan on spending a lot of time on this project, but some features that I still would like to implement:
 + Built in animations (orbit) for easy video recording
