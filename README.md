@@ -1,11 +1,11 @@
-# Godot point cloud viewer
+# Godot pointcloud viewer
 
 <p align="center">
     <img src="icon.svg" alt="Logo" width="200"/>
 <p>
 
 
-This application can render 3D point clouds with label support, and you can inspect them (fly around) in first person. Currently the release works only on windows machines. You can try compiling the project yourself on your desired OS.
+This application can render 3D pointclouds with label support, and you can inspect them (fly around) in first person. Currently the release works only on windows machines. You can try compiling the project yourself on your desired OS.
 
 ### Features
 
@@ -22,9 +22,9 @@ This application can render 3D point clouds with label support, and you can insp
     2.2. Points should be seperated by a new line
     2.3. Each line should be in the following format:
         *x,y,z,label(optional)*
-    - You can choose what seperator you use, but it has to be one symbol - cannot be *comma* + *space* as it's two symbols (also tab currently doesn't work)
-    - label is optional
-    - *z* corresponds to height
+    2.3.1. You can choose what seperator you use, but it has to be one symbol - cannot be *comma* + *space* as it's two symbols (also tab currently doesn't work)
+    2.3.2. label is optional
+    2.3.3. *z* corresponds to height
 3. Open the application, select your pointcloud file
 4. Basic controls are shown on the screen, settings can be found by pressing the ESC button
 
