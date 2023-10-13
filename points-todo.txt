@@ -1,9 +1,0 @@
-- orbiting animations
-	- local camera orbit
-	- global camera orbit (extent)
-
-- consider console for debugging with some useful debugging information
-
-- square points -> round points? (probably need a custom shader for this (lots of work and square works fine for now))
-
-- controls bug
