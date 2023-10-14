@@ -71,7 +71,7 @@ func _on_pointcloud_file_browser_file_selected(path):
 
 func _on_files_dropped(files):
 	var selectedFile = files[0]
-	if not selectedFile.get_extension() == "txt":
+	if not selectedFile.get_extension() == "txt" or not selectedFile.get_extension() == "csv":
 		push_warning("Invalid file extension")
 	else:
 		_on_pointcloud_file_browser_file_selected(selectedFile)
@@ -102,8 +102,9 @@ func _on_load_button_pressed():
 
 func validateSeperator():
 	seperator = SEPERATOR_EDIT.text
-	if (len(seperator) != 1):
-		SEPERATOR_LABEL.text += "Must be exactly 1 symbol, e.g. ','"
+	if len(seperator) != 1:
+		if !SEPERATOR_LABEL.text.contains("Must be exactly 1 symbol, e.g. ','"):
+			SEPERATOR_LABEL.text += "Must be exactly 1 symbol, e.g. ','"
 		SEPERATOR_LABEL.add_theme_color_override("font_color", Color.RED)
 		return false
 	return true
