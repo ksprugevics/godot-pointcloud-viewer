@@ -8,6 +8,7 @@ const INT64_MAX = (1 << 63) - 1
 @onready var SEPERATOR_CONTAINER = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer
 @onready var SEPERATOR_EDIT = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/SeperatorTextEdit
 @onready var HELP_PANEL = $HelpPanel
+@onready var EXAMPLE_POPUP = $ExamplePopup
 
 @onready var TEXT_LABEL = $CenterContainer/VBoxContainer/Text
 @onready var LOADING_LABEL = $CenterContainer/VBoxContainer/VBoxContainer/LoadingLabel
@@ -17,6 +18,7 @@ const INT64_MAX = (1 << 63) - 1
 @onready var FILE_BRWOSER_BUTTON = $CenterContainer/VBoxContainer/VBoxContainer/FileBrowserButton
 @onready var EXIT_BUTTON = $CenterContainer/VBoxContainer/VBoxContainer/ExitButton
 @onready var LABEL_CHECK_BOX = $CenterContainer/VBoxContainer/VBoxContainer/LabelCheckBox
+@onready var EXAMPLE_BUTTON = $CenterContainer/VBoxContainer/VBoxContainer/ExampleButton
 
 var pointcloudPath = ""
 var seperator
@@ -54,7 +56,6 @@ func _on_help_button_pressed():
 	HELP_PANEL.visible = !HELP_PANEL.visible
 
 
-
 func _on_file_browser_button_pressed():
 	FILE_BROWSER.visible = true
 
@@ -77,7 +78,8 @@ func _on_files_dropped(files):
 
 
 func _on_label_check_box_toggled(_button_pressed):
-	useLabels = !useLabels
+	useLabels = _button_pressed
+	LABEL_CHECK_BOX.set_pressed_no_signal(_button_pressed)
 	get_node("/root/Variables").useLabels = useLabels
 
 
@@ -89,6 +91,8 @@ func _on_load_button_pressed():
 	SEPERATOR_CONTAINER.visible = false
 	EXIT_BUTTON.visible = false
 	HELP_PANEL.visible = false
+	EXAMPLE_BUTTON.visible = false
+	EXAMPLE_POPUP.visible = false
 	LOADING_LABEL.visible = true
 	
 	await get_tree().create_timer(0.2).timeout # without this UI doesnt get a chance to update
@@ -181,3 +185,22 @@ func saveConfig():
 func _on_exit_button_pressed():
 	saveConfig()
 	get_tree().quit()
+
+
+func _on_example_button_pressed():
+	EXAMPLE_POPUP.visible = true
+
+
+func _on_example_popup_index_pressed(index):
+	seperator = " "
+	SEPERATOR_EDIT.text = seperator
+	match index:
+		1:
+			_on_label_check_box_toggled(true)
+			_on_pointcloud_file_browser_file_selected("res://Examples/labeled_building_roof.txt")
+		2:
+			_on_label_check_box_toggled(true)
+			_on_pointcloud_file_browser_file_selected("res://Examples/labeled_city_view.txt")
+		3:
+			_on_label_check_box_toggled(false)
+			_on_pointcloud_file_browser_file_selected("res://Examples/unlabeled_city_view.txt")
