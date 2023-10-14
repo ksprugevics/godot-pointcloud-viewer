@@ -71,7 +71,7 @@ func _on_pointcloud_file_browser_file_selected(path):
 
 func _on_files_dropped(files):
 	var selectedFile = files[0]
-	if not selectedFile.get_extension() == "txt":
+	if not selectedFile.get_extension() == "txt" or not selectedFile.get_extension() == "csv":
 		push_warning("Invalid file extension")
 	else:
 		_on_pointcloud_file_browser_file_selected(selectedFile)
