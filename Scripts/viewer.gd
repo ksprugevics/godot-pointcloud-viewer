@@ -4,6 +4,7 @@ const MENU_SCENE = "res://Scenes//main_menu.tscn"
 
 @onready var worldEnvironment = $WorldEnvironment
 @onready var cameraBody = $CharacterBody3D
+@onready var centerObject = $Center
 @onready var BG_COLOR_PICKER = get_node("Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings/SkyColorPicker")
 
 var rng = RandomNumberGenerator.new()
@@ -79,7 +80,9 @@ func createMesh():
 
 
 func placeCamera():
-	cameraBody.transform.origin = Vector3(extent[0] / 2, extent[3] + 5, extent[4] / 2)
+	centerObject.transform.origin = Vector3(extent[0] / 2, (extent[3] + extent[2]) / 2, extent[4] / 2)
+	cameraBody.transform.origin = Vector3(extent[0],  (extent[3] + extent[2]) / 2, extent[4])
+	cameraBody.look_at(centerObject.position)
 
 
 func _on_sky_color_picker_color_changed(color):

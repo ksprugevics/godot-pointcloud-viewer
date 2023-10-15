@@ -6,6 +6,7 @@ extends CharacterBody3D
 @onready var SENSITIVITY_SLIDER = get_node("../Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/SensitivitySlider")
 @onready var SPEED_SLIDER = get_node("../Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/MovementSpeedSlider")
 @onready var FAST_SLIDER = get_node("../Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/FastMoveSlider")
+@onready var CENTER_OBJECT = get_node("../Center")
 
 const sensitivityConstant = 0.0005
 
@@ -14,11 +15,26 @@ var speedMultiplier = 2.0
 var mouseSensitivity = 0.00125
 var fieldOfView = 75
 var menuOpen = false
+var extent
+
+var animationPlaying = false
+var counter = 0
+var distanceFromCenter = 30
+var rotationSpeed = 0.21
 
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	var extent = get_node("/root/Variables").extent
+	distanceFromCenter = maxf(abs(extent[0]), abs(extent[1]))
 	initializeConfig()
+
+
+func _process(delta):
+	counter += delta
+	if !animationPlaying: return
+	position = Vector3(sin(counter * rotationSpeed) * distanceFromCenter, position.y, cos(counter * rotationSpeed) * distanceFromCenter) + Vector3(CENTER_OBJECT.position.x, 0, CENTER_OBJECT.position.z)
+	look_at(CENTER_OBJECT.position)
 
 
 func initializeConfig():
@@ -60,6 +76,15 @@ func _input(event):
 		camera.rotate_x(-event.relative.y * mouseSensitivity)
 		# Limit rotation so you cannot do flips
 		camera.rotation.x = clamp(camera.rotation.x, -PI / 2, PI / 2)
+	
+	if event.is_action_pressed("cam_animation"):
+		animationPlaying = !animationPlaying
+
+	if Input.is_action_just_released("cam_zoom_in") and animationPlaying:
+		distanceFromCenter = clampf(distanceFromCenter - 1, 1, 1000)
+		
+	if Input.is_action_just_released("cam_zoom_out") and animationPlaying:
+		distanceFromCenter = clampf(distanceFromCenter + 1, 1, 1000)
 
 
 func _physics_process(_delta):
@@ -128,3 +153,15 @@ func saveConfig():
 	get_node("/root/Variables").cameraSpeed = speed
 	get_node("/root/Variables").speedMultiplier = speedMultiplier
 	get_node("/root/Variables").saveToConfig()
+
+
+func _on_animation_start_button_pressed():
+	animationPlaying = !animationPlaying
+
+
+func _on_animation_speed_slider_value_changed(value):
+	rotationSpeed = value
+
+
+func _on_animation_distance_slider_value_changed(value):
+	distanceFromCenter = value
