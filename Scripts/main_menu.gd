@@ -36,8 +36,53 @@ func _ready():
 	SEPERATOR_CONTAINER.visible = false
 	HELP_PANEL.visible = false
 	
+	checkCmdArgs()
+
 	get_tree().get_root().files_dropped.connect(_on_files_dropped)
 	initializeConfig()
+
+
+func checkCmdArgs():
+	var arguments = {}
+	for argument in OS.get_cmdline_args():
+		if argument.find("=") > -1:
+			var key_value = argument.split("=")
+			arguments[key_value[0].lstrip("--")] = key_value[1]
+		else:
+			arguments[argument.lstrip("--")] = ""
+	
+	var cmdPointcloudPath:String
+	if arguments.has("path"):
+		if arguments["path"] != "":
+			cmdPointcloudPath = arguments["path"]
+	
+	var cmdSeparator:String
+	if arguments.has("separator"):
+		if arguments["separator"] != "":
+			if arguments["separator"] == "%20":
+				cmdSeparator = " "
+			elif arguments["separator"] == "%09":
+				cmdSeparator = "	"
+			else:
+				cmdSeparator = arguments["separator"]
+	
+	var cmdUseLabels:bool
+	if arguments.has("useLabels"):
+		if arguments["useLabels"] == "true":
+			cmdUseLabels = true
+		else:
+			cmdUseLabels = false
+			
+	print("Pointcloud path: " + cmdPointcloudPath)
+	print("Separator: " + cmdSeparator)
+	print("Use labels: " + str(cmdUseLabels))
+	
+	if cmdPointcloudPath != "" and cmdSeparator != "":
+		print("Params given; launching pointcloud from file")
+	else:
+		print("Params not given; launching main menu")
+	
+#	C:\Projects\godot-point-cloud\Builds>godot_point_cloud_viewer_v1_0_1_0.exe --path="C://aaa.txt" --separator="%09" --useLabels=false
 
 
 func initializeConfig():
