@@ -209,6 +209,7 @@ item_3/text = "Unlabeled city view"
 item_3/id = 2
 
 [connection signal="file_selected" from="CenterContainer/VBoxContainer/PointcloudFileBrowser" to="." method="_on_pointcloud_file_browser_file_selected"]
+[connection signal="text_changed" from="CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/SeperatorTextEdit" to="." method="_on_seperator_text_edit_text_changed"]
 [connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/LabelCheckBox" to="." method="_on_label_check_box_toggled"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/FileBrowserButton" to="." method="_on_file_browser_button_pressed"]
