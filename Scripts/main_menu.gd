@@ -4,6 +4,12 @@ const VIEWER_SCENE = "res://Scenes//viewer.tscn"
 const UNLABELED_LABEL = "__UNLABELED__"
 const INT64_MAX = (1 << 63) - 1
 
+const CMD_PATH_LABEL = "path"
+const CMD_SEPARATOR_LABEL = "separator"
+const CMD_USELABEL_LABEL = "useLabels"
+const CMD_WHITESPACE_ENCODING = "%20"
+const CMD_HORIZONTALINDENT_ENCODING = "%09"
+
 @onready var FILE_BROWSER = $CenterContainer/VBoxContainer/PointcloudFileBrowser
 @onready var SEPERATOR_CONTAINER = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer
 @onready var SEPERATOR_EDIT = $CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/SeperatorTextEdit
@@ -36,8 +42,58 @@ func _ready():
 	SEPERATOR_CONTAINER.visible = false
 	HELP_PANEL.visible = false
 	
-	get_tree().get_root().files_dropped.connect(_on_files_dropped)
 	initializeConfig()
+	if checkCmdArgs():
+		_on_load_button_pressed()
+	
+	get_tree().get_root().files_dropped.connect(_on_files_dropped)
+
+
+func checkCmdArgs():
+	var arguments = {}
+	for argument in OS.get_cmdline_args():
+		if argument.find("=") > -1:
+			var key_value = argument.split("=")
+			arguments[key_value[0].lstrip("--")] = key_value[1]
+		else:
+			arguments[argument.lstrip("--")] = ""
+	
+	var cmdPointcloudPath:String
+	if arguments.has(CMD_PATH_LABEL):
+		if arguments[CMD_PATH_LABEL] != "":
+			cmdPointcloudPath = arguments[CMD_PATH_LABEL]
+	
+	var cmdSeparator:String
+	if arguments.has(CMD_SEPARATOR_LABEL):
+		if arguments[CMD_SEPARATOR_LABEL] != "":
+			if arguments[CMD_SEPARATOR_LABEL] == CMD_WHITESPACE_ENCODING:
+				cmdSeparator = " "
+			elif arguments[CMD_SEPARATOR_LABEL] == CMD_HORIZONTALINDENT_ENCODING:
+				cmdSeparator = "	"
+			else:
+				cmdSeparator = arguments[CMD_SEPARATOR_LABEL]
+	
+	var cmdUseLabels:bool
+	if arguments.has(CMD_USELABEL_LABEL):
+		if arguments[CMD_USELABEL_LABEL] == "true":
+			cmdUseLabels = true
+		else:
+			cmdUseLabels = false
+			
+	print("Pointcloud path:" + cmdPointcloudPath)
+	print("Separator:" + cmdSeparator)
+	print("Use labels:" + str(cmdUseLabels))
+	
+	if cmdPointcloudPath != "" and cmdSeparator != "":
+		print("Params given; launching pointcloud from file")
+		pointcloudPath = cmdPointcloudPath
+		SEPERATOR_EDIT.text = cmdSeparator
+		seperator = cmdSeparator
+		useLabels = cmdUseLabels
+		return true
+	
+	print("Params not given; launching main menu")
+	return false
 
 
 func initializeConfig():
@@ -101,7 +157,6 @@ func _on_load_button_pressed():
 
 
 func validateSeperator():
-	seperator = SEPERATOR_EDIT.text
 	if len(seperator) != 1:
 		if !SEPERATOR_LABEL.text.contains("Must be exactly 1 symbol, e.g. ','"):
 			SEPERATOR_LABEL.text += "Must be exactly 1 symbol, e.g. ','"
@@ -122,7 +177,6 @@ func processLoad():
 func loadPointcloudFile(filePath, limit=null):
 	var file = FileAccess.open(filePath, FileAccess.READ)
 	limit = file.get_length() if limit == null else limit
-
 	for i in range(limit):
 		var line = file.get_csv_line(seperator)
 		if len(line) < 3: continue
@@ -205,3 +259,7 @@ func _on_example_popup_index_pressed(index):
 		3:
 			_on_label_check_box_toggled(false)
 			_on_pointcloud_file_browser_file_selected("res://Examples/unlabeled_city_view.txt")
+
+
+func _on_seperator_text_edit_text_changed():
+	seperator = SEPERATOR_EDIT.text
