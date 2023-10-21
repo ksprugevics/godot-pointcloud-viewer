@@ -56,6 +56,7 @@ func initializeConfig():
 	CONTROLS_CHECKBOX.set_pressed_no_signal(showControls)
 	CONTROLS_LABEL.visible = showControls
 
+
 func _process(_delta):
 	if showFps:
 		FPS_COUNTER.set_text(str(Engine.get_frames_per_second()) + "fps")

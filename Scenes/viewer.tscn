@@ -41,6 +41,8 @@ disabled = true
 
 [node name="Camera" type="Camera3D" parent="CharacterBody3D"]
 
+[node name="Center" type="Node3D" parent="."]
+
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -243,6 +245,51 @@ edit_alpha = false
 [node name="HSeparator2" type="HSeparator" parent="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings"]
 layout_mode = 2
 
+[node name="AnimationSettings" type="VBoxContainer" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AnimationLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/AnimationSettings"]
+layout_mode = 2
+text = "Animation
+"
+horizontal_alignment = 1
+
+[node name="AnimationSpeedLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/AnimationSettings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Animation Speed"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationSpeedSlider" type="HSlider" parent="Control/Panel/ScrollContainer/VBoxContainer/AnimationSettings"]
+layout_mode = 2
+min_value = 0.01
+max_value = 5.0
+step = 0.1
+value = 0.21
+scrollable = false
+
+[node name="AnimationDistanceLabel" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer/AnimationSettings"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Animation distance"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationDistanceSlider" type="HSlider" parent="Control/Panel/ScrollContainer/VBoxContainer/AnimationSettings"]
+layout_mode = 2
+min_value = 1.0
+max_value = 1000.0
+value = 30.0
+scrollable = false
+
+[node name="AnimationStartButton" type="Button" parent="Control/Panel/ScrollContainer/VBoxContainer/AnimationSettings"]
+layout_mode = 2
+text = "Toggle animation"
+
+[node name="HSeparator2" type="HSeparator" parent="Control/Panel/ScrollContainer/VBoxContainer/AnimationSettings"]
+layout_mode = 2
+
 [node name="LabelSettings" type="VBoxContainer" parent="Control/Panel/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -293,7 +340,8 @@ w, a, s, d - move camera
 mouse - rotate camera
 spacebar - move up
 ctrl - move down
-shift - move 2x speed"
+shift - move 2x speed
+p - start/stop orbit animation"
 horizontal_alignment = 1
 
 [node name="Legend" type="RichTextLabel" parent="Control"]
@@ -325,5 +373,8 @@ bbcode_enabled = true
 [connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/MovementSettings/FastMoveSlider" to="CharacterBody3D" method="_on_fast_move_slider_value_changed"]
 [connection signal="color_changed" from="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings/SkyColorPicker" to="." method="_on_sky_color_picker_color_changed"]
 [connection signal="popup_closed" from="Control/Panel/ScrollContainer/VBoxContainer/EnvironmentSettings/SkyColorPicker" to="." method="_on_sky_color_picker_popup_closed"]
+[connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/AnimationSettings/AnimationSpeedSlider" to="CharacterBody3D" method="_on_animation_speed_slider_value_changed"]
+[connection signal="value_changed" from="Control/Panel/ScrollContainer/VBoxContainer/AnimationSettings/AnimationDistanceSlider" to="CharacterBody3D" method="_on_animation_distance_slider_value_changed"]
+[connection signal="pressed" from="Control/Panel/ScrollContainer/VBoxContainer/AnimationSettings/AnimationStartButton" to="CharacterBody3D" method="_on_animation_start_button_pressed"]
 [connection signal="pressed" from="Control/Panel/VBoxContainer/ReloadButton" to="." method="_on_reload_button_pressed"]
 [connection signal="pressed" from="Control/Panel/VBoxContainer/ExitButton" to="Control" method="_on_exit_button_pressed"]

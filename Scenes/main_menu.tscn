@@ -44,6 +44,7 @@ layout_mode = 2
 theme = ExtResource("2_qwv7d")
 theme_override_font_sizes/font_size = 30
 text = "Drag & drop your pointcloud file or find it with the file browser. 
+Or choose from an example pointcloud.
 "
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -56,7 +57,7 @@ theme = ExtResource("2_qwv7d")
 ok_button_text = "Open"
 file_mode = 0
 access = 2
-filters = PackedStringArray("*.txt")
+filters = PackedStringArray("*.txt", "*.csv")
 show_hidden_files = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
@@ -65,23 +66,21 @@ theme_override_constants/separation = 15
 
 [node name="SeperatorContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+alignment = 1
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Coordinate seperator symbol:  "
+vertical_alignment = 1
 
-[node name="SeperatorTextEdit" type="LineEdit" parent="CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer"]
-custom_minimum_size = Vector2(80, 40)
+[node name="SeperatorTextEdit" type="TextEdit" parent="CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer"]
+custom_minimum_size = Vector2(50, 40)
 layout_mode = 2
-theme = ExtResource("2_qwv7d")
-theme_override_font_sizes/font_size = 20
-text = ","
-alignment = 1
-max_length = 10
-expand_to_text_length = true
-context_menu_enabled = false
+size_flags_vertical = 4
 draw_control_chars = true
+draw_tabs = true
+draw_spaces = true
 
 [node name="LabelCheckBox" type="CheckBox" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -109,6 +108,16 @@ theme = ExtResource("2_qwv7d")
 theme_override_fonts/font = SubResource("SystemFont_xqi6m")
 theme_override_font_sizes/font_size = 22
 text = "Browse"
+
+[node name="ExampleButton" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_qwv7d")
+theme_override_fonts/font = SubResource("SystemFont_xqi6m")
+theme_override_font_sizes/font_size = 22
+text = "Examples"
 
 [node name="ExitButton" type="Button" parent="CenterContainer/VBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(300, 40)
@@ -176,19 +185,35 @@ vertical_alignment = 1
 
 [node name="VersionLabel" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
 offset_left = 7.0
-offset_top = -27.0
-offset_right = 106.0
-offset_bottom = -1.0
-grow_vertical = 0
-text = "Version 1.0.0.0"
+offset_right = 120.0
+offset_bottom = 26.0
+text = "Version 1.0.1.0"
+
+[node name="ExamplePopup" type="PopupMenu" parent="."]
+title = "Example pointclouds"
+initial_position = 1
+size = Vector2i(220, 116)
+always_on_top = true
+min_size = Vector2i(0, 30)
+theme_override_constants/item_start_padding = 25
+item_count = 4
+item_0/text = "Pointclouds"
+item_0/id = 999
+item_0/separator = true
+item_1/text = "Labeled building roof"
+item_1/id = 0
+item_2/text = "Labeled city view"
+item_2/id = 1
+item_3/text = "Unlabeled city view"
+item_3/id = 2
 
 [connection signal="file_selected" from="CenterContainer/VBoxContainer/PointcloudFileBrowser" to="." method="_on_pointcloud_file_browser_file_selected"]
+[connection signal="text_changed" from="CenterContainer/VBoxContainer/VBoxContainer/SeperatorContainer/SeperatorTextEdit" to="." method="_on_seperator_text_edit_text_changed"]
 [connection signal="toggled" from="CenterContainer/VBoxContainer/VBoxContainer/LabelCheckBox" to="." method="_on_label_check_box_toggled"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/FileBrowserButton" to="." method="_on_file_browser_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/ExampleButton" to="." method="_on_example_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="HelpButton" to="." method="_on_help_button_pressed"]
+[connection signal="index_pressed" from="ExamplePopup" to="." method="_on_example_popup_index_pressed"]
