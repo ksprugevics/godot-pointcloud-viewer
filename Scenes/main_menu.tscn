@@ -188,7 +188,7 @@ layout_mode = 1
 offset_left = 7.0
 offset_right = 120.0
 offset_bottom = 26.0
-text = "Version 1.0.0.0"
+text = "Version 1.0.1.0"
 
 [node name="ExamplePopup" type="PopupMenu" parent="."]
 title = "Example pointclouds"
