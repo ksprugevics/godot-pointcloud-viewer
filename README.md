@@ -5,7 +5,7 @@
 <p>
 
 
-This application can render 3D pointclouds with label support, and you can inspect them (fly around) in first person. Currently the release works only on windows machines. You can try compiling the project yourself on your desired OS.
+This application can render 3D pointclouds with label support, and you can inspect them (fly around) in first person. Currently the release works only on windows machines. You can try compiling the project yourself on your desired OS. [Video demo](https://www.youtube.com/watch?v=F37Oqu7L1K4)
 
 ### Features
 
